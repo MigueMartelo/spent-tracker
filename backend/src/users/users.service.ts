@@ -1,26 +1,83 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from '../prisma/prisma.service';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findByEmail(email: string): Promise<Partial<User>> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name ?? undefined,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to find user by email');
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findById(id: string): Promise<Partial<User>> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name ?? undefined,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to find user by id');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  async create(
+    email: string,
+    password: string,
+    name?: string,
+  ): Promise<Partial<User>> {
+    try {
+      const existingUser = await this.findByEmail(email);
+      if (existingUser) {
+        throw new ConflictException('User already exists');
+      }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+      const passwordHash = await bcrypt.hash(password, 10);
+      const newUser = await this.prisma.user.create({
+        data: { email, passwordHash, name },
+      });
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+      return {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name ?? undefined,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to create user');
+    }
   }
 }
