@@ -9,6 +9,11 @@ import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { ExpenseType } from './entities/expense.entity';
 
+export interface ExpenseFilters {
+  type?: ExpenseType;
+  creditCardId?: string | 'none'; // 'none' means expenses without credit card
+}
+
 @Injectable()
 export class ExpensesService {
   constructor(private prisma: PrismaService) {}
@@ -21,18 +26,34 @@ export class ExpensesService {
         amount: createExpenseDto.amount,
         description: createExpenseDto.description,
         date: new Date(createExpenseDto.date),
+        creditCardId: createExpenseDto.creditCardId || null,
+      },
+      include: {
+        creditCard: true,
       },
     });
   }
 
-  async findAll(userId: string, type?: ExpenseType) {
+  async findAll(userId: string, filters?: ExpenseFilters) {
     const where: Prisma.ExpenseWhereInput = { userId };
-    if (type) {
-      where.type = type;
+
+    if (filters?.type) {
+      where.type = filters.type;
+    }
+
+    if (filters?.creditCardId) {
+      if (filters.creditCardId === 'none') {
+        where.creditCardId = null;
+      } else {
+        where.creditCardId = filters.creditCardId;
+      }
     }
 
     return this.prisma.expense.findMany({
       where,
+      include: {
+        creditCard: true,
+      },
       orderBy: {
         date: 'desc',
       },
@@ -42,6 +63,9 @@ export class ExpensesService {
   async findOne(id: string, userId: string) {
     const expense = await this.prisma.expense.findUnique({
       where: { id },
+      include: {
+        creditCard: true,
+      },
     });
 
     if (!expense) {
@@ -66,10 +90,22 @@ export class ExpensesService {
       updateData.description = updateExpenseDto.description;
     if (updateExpenseDto.date)
       updateData.date = new Date(updateExpenseDto.date);
+    if (updateExpenseDto.creditCardId !== undefined) {
+      if (updateExpenseDto.creditCardId) {
+        updateData.creditCard = {
+          connect: { id: updateExpenseDto.creditCardId },
+        };
+      } else {
+        updateData.creditCard = { disconnect: true };
+      }
+    }
 
     return this.prisma.expense.update({
       where: { id },
       data: updateData,
+      include: {
+        creditCard: true,
+      },
     });
   }
 

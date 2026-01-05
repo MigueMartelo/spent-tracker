@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Expense, type User } from '@prisma/client';
-import { ExpensesService } from './expenses.service';
+import { ExpensesService, ExpenseFilters } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -31,8 +31,16 @@ export class ExpensesController {
   }
 
   @Get()
-  findAll(@CurrentUser() user: User, @Query('type') type?: ExpenseType) {
-    return this.expensesService.findAll(user.id, type);
+  findAll(
+    @CurrentUser() user: User,
+    @Query('type') type?: ExpenseType,
+    @Query('creditCardId') creditCardId?: string,
+  ) {
+    const filters: ExpenseFilters = {};
+    if (type) filters.type = type;
+    if (creditCardId) filters.creditCardId = creditCardId;
+
+    return this.expensesService.findAll(user.id, filters);
   }
 
   @Get(':id')

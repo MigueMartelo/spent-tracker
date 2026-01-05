@@ -4,7 +4,9 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
   Min,
+  MinLength,
 } from 'class-validator';
 import { ExpenseType } from '../entities/expense.entity';
 
@@ -16,10 +18,14 @@ export class CreateExpenseDto {
   @Min(0.01)
   amount: number;
 
-  @IsOptional()
   @IsString()
-  description?: string;
+  @MinLength(1, { message: 'Description is required' })
+  description: string;
 
   @IsDateString()
   date: string;
+
+  @IsOptional()
+  @IsUUID()
+  creditCardId?: string;
 }
