@@ -17,6 +17,7 @@ export class CreditCardsService {
         userId,
         name: createCreditCardDto.name,
         color: createCreditCardDto.color,
+        textColor: createCreditCardDto.textColor || '#FFFFFF',
       },
     });
   }
