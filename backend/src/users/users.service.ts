@@ -1,10 +1,8 @@
 import {
-  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from './entities/user.entity';
 
@@ -12,20 +10,21 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByEmail(email: string): Promise<Partial<User>> {
+  async findByEmail(email: string): Promise<Partial<User> | null> {
     try {
       const user = await this.prisma.user.findUnique({
         where: { email },
       });
 
       if (!user) {
-        throw new NotFoundException('User not found');
+        return null;
       }
 
       return {
         id: user.id,
         email: user.email,
         name: user.name ?? undefined,
+        passwordHash: user.passwordHash,
       };
     } catch (error) {
       console.error(error);
@@ -56,16 +55,10 @@ export class UsersService {
 
   async create(
     email: string,
-    password: string,
+    passwordHash: string,
     name?: string,
   ): Promise<Partial<User>> {
     try {
-      const existingUser = await this.findByEmail(email);
-      if (existingUser) {
-        throw new ConflictException('User already exists');
-      }
-
-      const passwordHash = await bcrypt.hash(password, 10);
       const newUser = await this.prisma.user.create({
         data: { email, passwordHash, name },
       });
