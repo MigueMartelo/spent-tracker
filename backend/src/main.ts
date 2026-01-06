@@ -5,34 +5,24 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for frontend
-  const allowedOrigins = process.env.FRONTEND_URL
-    ? process.env.FRONTEND_URL.split(',').map((url) => url.trim())
-    : ['http://localhost:5173'];
-
-  console.log('🌐 Allowed CORS origins:', allowedOrigins);
+  // Enable CORS for frontend - allow all origins in production for now
+  // TODO: Restrict to specific origins after debugging
   console.log('🌐 FRONTEND_URL env:', process.env.FRONTEND_URL);
+  console.log('🌐 NODE_ENV:', process.env.NODE_ENV);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) {
-        return callback(null, true);
-      }
-      
-      // Check if origin is in allowed list
-      if (allowedOrigins.includes(origin)) {
-        console.log('✅ CORS allowed for origin:', origin);
-        return callback(null, true);
-      }
-      
-      console.log('❌ CORS blocked for origin:', origin);
-      console.log('❌ Allowed origins are:', allowedOrigins);
-      callback(new Error('Not allowed by CORS'));
-    },
+    origin: true, // Allow all origins temporarily for debugging
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'Origin',
+      'X-Requested-With',
+    ],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
 
   // Global validation pipe
@@ -45,7 +35,7 @@ async function bootstrap() {
   );
 
   const port = process.env.PORT || 3000;
-  await app.listen(port);
-  console.log(`🚀 Backend running on http://localhost:${port}`);
+  await app.listen(port, '0.0.0.0');
+  console.log(`🚀 Backend running on port ${port}`);
 }
 bootstrap();
