@@ -44,11 +44,11 @@ function CategoriesPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
-      toast.success('Category deleted successfully');
+      toast.success(t('categories.categoryDeletedSuccess'));
       setDeleteCategory(null);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete category');
+      toast.error(error.message || t('categories.deleteCategoryFailed'));
     },
   });
 
@@ -91,7 +91,7 @@ function CategoriesPage() {
             </Button>
           </Link>
           <h1 className='text-xl md:text-2xl font-bold text-slate-800'>
-            Categories
+            {t('categories.title')}
           </h1>
         </div>
         <Button
@@ -100,13 +100,13 @@ function CategoriesPage() {
           className='gap-2 hidden md:flex'
         >
           <Plus className='w-4 h-4' />
-          Add Category
+          {t('categories.addCategory')}
         </Button>
       </div>
 
       {/* Description */}
       <p className='text-sm text-slate-500'>
-        Organize your expenses by creating custom categories with colors.
+        {t('categories.manageCategories')}
       </p>
 
       {/* Categories List */}
@@ -172,14 +172,14 @@ function CategoriesPage() {
                 <Tag className='w-7 h-7 text-slate-400' />
               </div>
               <h3 className='font-semibold text-slate-700 mb-1'>
-                No categories yet
+                {t('categories.noCategoriesYet')}
               </h3>
               <p className='text-sm text-slate-500 mb-4'>
-                Create your first category to organize expenses
+                {t('categories.addFirstCategory')}
               </p>
               <Button onClick={() => setDialogOpen(true)} className='gap-2'>
                 <Plus className='w-4 h-4' />
-                Add Category
+                {t('categories.addCategory')}
               </Button>
             </CardContent>
           </Card>
@@ -209,22 +209,26 @@ function CategoriesPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Category</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t('categories.deleteCategory')}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{deleteCategory?.name}"? This
-              will remove the category from all expenses, but won't delete the
-              expenses themselves.
+              {t('categories.deleteCategoryConfirm', {
+                name: deleteCategory?.name,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() =>
                 deleteCategory && deleteMutation.mutate(deleteCategory.id)
               }
               className='bg-red-600 hover:bg-red-700'
             >
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending
+                ? t('common.deleting')
+                : t('common.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

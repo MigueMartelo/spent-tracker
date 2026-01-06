@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoriesApi } from '@/lib/api';
 import { toast } from 'sonner';
 import type { Category, CreateCategoryDto } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 interface CategoryDialogProps {
   open: boolean;
@@ -21,17 +22,18 @@ export function CategoryDialog({
   onOpenChange,
   category,
 }: CategoryDialogProps) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
     mutationFn: categoriesApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
-      toast.success('Category added successfully');
+      toast.success(t('categories.categoryAddedSuccess'));
       onOpenChange(false);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to add category');
+      toast.error(error.message || t('categories.addCategoryFailed'));
     },
   });
 
@@ -40,11 +42,11 @@ export function CategoryDialog({
       categoriesApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
-      toast.success('Category updated successfully');
+      toast.success(t('categories.categoryUpdatedSuccess'));
       onOpenChange(false);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to update category');
+      toast.error(error.message || t('categories.updateCategoryFailed'));
     },
   });
 
@@ -63,7 +65,9 @@ export function CategoryDialog({
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>
-            {category ? 'Edit Category' : 'Add Category'}
+            {category
+              ? t('categories.editCategory')
+              : t('categories.addCategoryDialog')}
           </DialogTitle>
         </DialogHeader>
         <CategoryForm
