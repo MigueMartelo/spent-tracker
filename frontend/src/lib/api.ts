@@ -93,6 +93,9 @@ export const authApi = {
     setToken(response.access_token);
     return response;
   },
+  getMe: async (): Promise<{ id: string; email: string; name: string | null }> => {
+    return apiRequest<{ id: string; email: string; name: string | null }>('/auth/me');
+  },
 };
 
 // Expenses API

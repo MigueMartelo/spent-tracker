@@ -6,11 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { getToken, removeToken } from './api';
+import { getToken, removeToken, authApi } from './api';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   setUser: (user: User | null) => void;
   logout: () => void;
 }
@@ -20,15 +21,32 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Check if user is logged in on mount
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      // Token exists, but we don't have user info yet
-      // We'll set user when they successfully login/register
-      setIsAuthenticated(true);
-    }
+    const checkAuth = async () => {
+      const token = getToken();
+      if (token) {
+        try {
+          // Fetch current user to validate token and restore state
+          const userData = await authApi.getMe();
+          setUser(userData as User);
+          setIsAuthenticated(true);
+        } catch (error) {
+          // Token is invalid or expired
+          removeToken();
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const handleSetUser = (newUser: User | null) => {
@@ -47,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         isAuthenticated,
+        isLoading,
         setUser: handleSetUser,
         logout,
       }}
