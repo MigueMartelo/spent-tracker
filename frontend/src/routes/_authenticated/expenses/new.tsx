@@ -37,7 +37,7 @@ function NewExpensePage() {
   return (
     <div className='container mx-auto px-4 py-4 md:py-6 max-w-lg'>
       {/* Back Button */}
-      <Link to='/expenses' className='inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 mb-4'>
+      <Link to='/expenses' className='inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 mb-4 min-h-[44px]'>
         <ArrowLeft className='w-4 h-4' />
         {t('expenses.backToDashboard')}
       </Link>

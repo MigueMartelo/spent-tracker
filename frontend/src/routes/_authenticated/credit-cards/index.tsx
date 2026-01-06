@@ -86,7 +86,7 @@ function CreditCardsPage() {
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           <Link to='/expenses'>
-            <Button variant='ghost' size='icon' className='shrink-0'>
+            <Button variant='ghost' size='icon' className='shrink-0 h-11 w-11 sm:h-9 sm:w-9'>
               <ArrowLeft className='w-5 h-5' />
             </Button>
           </Link>
@@ -145,7 +145,7 @@ function CreditCardsPage() {
                     variant='ghost'
                     size='icon'
                     onClick={() => handleEdit(card)}
-                    className='text-slate-500 hover:text-slate-700'
+                    className='text-slate-500 hover:text-slate-700 h-11 w-11 sm:h-9 sm:w-9'
                   >
                     <Pencil className='w-4 h-4' />
                   </Button>
@@ -153,7 +153,7 @@ function CreditCardsPage() {
                     variant='ghost'
                     size='icon'
                     onClick={() => setDeleteCard(card)}
-                    className='text-slate-500 hover:text-red-600'
+                    className='text-slate-500 hover:text-red-600 h-11 w-11 sm:h-9 sm:w-9'
                   >
                     <Trash2 className='w-4 h-4' />
                   </Button>
@@ -189,7 +189,7 @@ function CreditCardsPage() {
       <Button
         onClick={() => setDialogOpen(true)}
         size='lg'
-        className='md:hidden fixed bottom-6 right-4 z-50 h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 transition-all'
+        className='md:hidden fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-4 z-50 h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 transition-all'
       >
         <Plus className='w-6 h-6' />
       </Button>

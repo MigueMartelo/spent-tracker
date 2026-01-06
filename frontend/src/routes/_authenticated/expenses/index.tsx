@@ -404,7 +404,7 @@ function ExpensesPage() {
       {/* Mobile Floating Action Button */}
       <Link
         to='/expenses/new'
-        className='md:hidden fixed bottom-6 right-4 z-50'
+        className='md:hidden fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-4 z-50'
       >
         <Button
           size='lg'

@@ -63,7 +63,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
             {/* Mobile Menu Button */}
             <button
-              className='md:hidden p-2 -mr-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors'
+              className='md:hidden p-2.5 -mr-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center'
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label='Toggle menu'
             >
@@ -121,7 +121,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </nav>
 
       {/* Main Content */}
-      <main className='pb-20 md:pb-8'>{children}</main>
+      <main className='pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8'>
+        {children}
+      </main>
 
       {/* Footer */}
       <Footer />

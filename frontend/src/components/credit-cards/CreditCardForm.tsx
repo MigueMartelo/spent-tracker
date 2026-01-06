@@ -158,7 +158,7 @@ export function CreditCardForm({
         <Label>{t('creditCards.backgroundColor')}</Label>
 
         {/* Preset Colors Grid */}
-        <div className='grid grid-cols-10 gap-1.5'>
+        <div className='grid grid-cols-8 sm:grid-cols-10 gap-1.5'>
           {PRESET_COLORS.map((color) => (
             <button
               key={color}

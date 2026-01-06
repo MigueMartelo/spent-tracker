@@ -204,7 +204,7 @@ function HistoryPage() {
       {/* Header */}
       <div className='flex items-center gap-3'>
         <Link to='/expenses'>
-          <Button variant='ghost' size='icon' className='shrink-0'>
+          <Button variant='ghost' size='icon' className='shrink-0 h-11 w-11 sm:h-9 sm:w-9'>
             <ArrowLeft className='w-5 h-5' />
           </Button>
         </Link>
@@ -410,7 +410,7 @@ function HistoryPage() {
       <div className='space-y-4'>
         {Object.entries(groupedExpenses).map(([dateKey, dayExpenses]) => (
           <div key={dateKey} className='space-y-2'>
-            <h3 className='text-xs font-semibold text-slate-500 uppercase tracking-wider sticky top-0 bg-slate-100/80 backdrop-blur-sm py-1 px-1 -mx-1 rounded'>
+            <h3 className='text-xs font-semibold text-slate-500 uppercase tracking-wider sticky top-14 md:top-16 z-10 bg-slate-100/80 backdrop-blur-sm py-1 px-1 -mx-1 rounded'>
               {format(parseLocalDate(dateKey + 'T00:00:00'), 'EEEE, MMMM d, yyyy')}
             </h3>
             
