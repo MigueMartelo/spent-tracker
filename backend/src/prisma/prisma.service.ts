@@ -4,10 +4,9 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 @Injectable()
-export class PrismaService
-  extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
-{
+export class PrismaService implements OnModuleInit, OnModuleDestroy {
+  private readonly client: PrismaClient;
+
   constructor(private configService: ConfigService) {
     const databaseUrl = configService.get<string>('DATABASE_URL');
 
@@ -17,14 +16,30 @@ export class PrismaService
 
     const adapter = new PrismaPg({ connectionString: databaseUrl });
 
-    super({ adapter });
+    this.client = new PrismaClient({ adapter });
   }
 
   async onModuleInit() {
-    await this.$connect();
+    await this.client.$connect();
   }
 
   async onModuleDestroy() {
-    await this.$disconnect();
+    await this.client.$disconnect();
+  }
+
+  get user() {
+    return this.client.user;
+  }
+
+  get expense() {
+    return this.client.expense;
+  }
+
+  get creditCard() {
+    return this.client.creditCard;
+  }
+
+  get category() {
+    return this.client.category;
   }
 }

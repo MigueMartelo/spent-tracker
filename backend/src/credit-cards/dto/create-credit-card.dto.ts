@@ -28,4 +28,3 @@ export class CreateCreditCardDto {
   })
   textColor?: string;
 }
-

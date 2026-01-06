@@ -6,4 +6,3 @@ export class CreditCard {
   createdAt: Date;
   updatedAt: Date;
 }
-

@@ -7,4 +7,3 @@ export class Category {
   createdAt: Date;
   updatedAt: Date;
 }
-

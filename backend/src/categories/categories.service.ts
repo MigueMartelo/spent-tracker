@@ -11,18 +11,18 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(userId: string, createCategoryDto: CreateCategoryDto) {
+  create(userId: string, createCategoryDto: CreateCategoryDto) {
     return this.prisma.category.create({
       data: {
         userId,
         name: createCategoryDto.name,
         color: createCategoryDto.color,
-        textColor: createCategoryDto.textColor || '#FFFFFF',
+        textColor: createCategoryDto.textColor ?? '#FFFFFF',
       },
     });
   }
 
-  async findAll(userId: string) {
+  findAll(userId: string) {
     return this.prisma.category.findMany({
       where: { userId },
       orderBy: { name: 'asc' },
