@@ -18,6 +18,7 @@ import { useAuth } from '@/lib/auth';
 import { toast } from 'sonner';
 import { User } from '@/types';
 import { Wallet, Mail, Lock } from 'lucide-react';
+import { Footer } from '@/components/layout/Footer';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -140,19 +141,7 @@ function LoginPage() {
       </div>
 
       {/* Footer */}
-      <div className='p-4 text-center text-xs text-slate-400'>
-        © {new Date().getFullYear()} Expense Tracker
-        <br />
-        With ❤️ by{' '}
-        <a
-          href='https://www.linkedin.com/in/miguemartelo/'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='text-emerald-600 hover:text-emerald-700 hover:underline'
-        >
-          Migue Martelo
-        </a>
-      </div>
+      <Footer />
     </div>
   );
 }

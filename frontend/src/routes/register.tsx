@@ -18,6 +18,7 @@ import { useAuth } from '@/lib/auth';
 import { toast } from 'sonner';
 import { User } from '@/types';
 import { Wallet, Mail, Lock, User as UserIcon } from 'lucide-react';
+import { Footer } from '@/components/layout/Footer';
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -157,9 +158,7 @@ function RegisterPage() {
       </div>
 
       {/* Footer */}
-      <div className='p-4 text-center text-xs text-slate-400'>
-        © {new Date().getFullYear()} Expense Tracker
-      </div>
+      <Footer />
     </div>
   );
 }

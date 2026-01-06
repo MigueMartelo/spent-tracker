@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth';
 import { LogOut, Menu, X, Wallet, CreditCard } from 'lucide-react';
 import { useState } from 'react';
+import { Footer } from './Footer';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
@@ -114,6 +115,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Main Content */}
       <main className='pb-20 md:pb-8'>{children}</main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
