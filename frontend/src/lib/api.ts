@@ -43,12 +43,13 @@ export const removeToken = (): void => {
 // API client with error handling
 const apiRequest = async <T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit & { skipAuthRedirect?: boolean } = {}
 ): Promise<T> => {
+  const { skipAuthRedirect, ...fetchOptions } = options;
   const token = getToken();
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    ...options.headers,
+    ...fetchOptions.headers,
   };
 
   if (token) {
@@ -56,16 +57,19 @@ const apiRequest = async <T>(
   }
 
   const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
+    ...fetchOptions,
     headers,
   });
-  // Handle 401 Unauthorized
+  // Handle 401 Unauthorized - only redirect if not skipping auth redirect (e.g., during login/register)
   if (response.status === 401) {
     removeToken();
-    if (typeof window !== 'undefined') {
+    if (!skipAuthRedirect && typeof window !== 'undefined') {
       window.location.href = '/login';
     }
-    throw new Error('Unauthorized');
+    const error = await response
+      .json()
+      .catch(() => ({ message: 'Unauthorized' }));
+    throw new Error(error.message || 'Unauthorized');
   }
 
   if (!response.ok) {
@@ -84,6 +88,7 @@ export const authApi = {
     const response = await apiRequest<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
+      skipAuthRedirect: true, // Don't redirect on 401 during registration
     });
     setToken(response.access_token);
     return response;
@@ -92,6 +97,7 @@ export const authApi = {
     const response = await apiRequest<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
+      skipAuthRedirect: true, // Don't redirect on 401 during login
     });
     setToken(response.access_token);
     return response;

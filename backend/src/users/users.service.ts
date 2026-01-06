@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -69,6 +70,16 @@ export class UsersService {
         name: newUser.name ?? undefined,
       };
     } catch (error) {
+      // Handle Prisma unique constraint violation (duplicate email)
+      // Check if error has code property and it's P2002 (unique constraint violation)
+      if (
+        error &&
+        typeof error === 'object' &&
+        'code' in error &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException('User with this email already exists');
+      }
       console.error(error);
       throw new InternalServerErrorException('Failed to create user');
     }

@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
@@ -19,7 +23,7 @@ export class AuthService {
     // check if user already exists
     const existingUser = await this.userService.findByEmail(email);
     if (existingUser) {
-      throw new UnauthorizedException('User already exists');
+      throw new ConflictException('User with this email already exists');
     }
 
     // Hash password
@@ -30,7 +34,7 @@ export class AuthService {
     const user = await this.userService.create(email, passwordHash, name);
 
     // Generate JWT token
-    const token = await this.jwtService.signAsync({ id: user.id });
+    const token = this.generateToken(user.id ?? '', user.email ?? '');
 
     return {
       access_token: token,
