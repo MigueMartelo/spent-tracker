@@ -63,6 +63,13 @@ export function ExpenseForm({
 
   const expenseSchema = createExpenseSchema(t);
 
+  // Helper to parse expense date as LOCAL date (avoiding timezone issues)
+  // The backend stores dates as "2026-01-05T00:00:00.000Z" but we want to treat as local date
+  const parseLocalDateString = (dateValue: string): string => {
+    // Extract YYYY-MM-DD and return as-is (no timezone conversion)
+    return dateValue.substring(0, 10);
+  };
+
   const {
     register,
     handleSubmit,
@@ -76,7 +83,7 @@ export function ExpenseForm({
           type: expense.type,
           amount: Number(expense.amount),
           description: expense.description,
-          date: format(new Date(expense.date), 'yyyy-MM-dd'),
+          date: parseLocalDateString(expense.date),
           creditCardId: expense.creditCardId || undefined,
         }
       : {
