@@ -15,7 +15,7 @@
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "ls -la dist/ && node dist/main",
+    "start:prod": "ls -la dist/ && (test -f dist/main.js && node dist/main.js) || (test -f dist/src/main.js && node dist/src/main.js) || (echo 'ERROR: main.js not found' && find dist -type f -name '*.js' | head -10 && exit 1)",
     "railway:deploy": "npm run build && npm run prisma:deploy && npm run start:prod",
     "railway:start": "npm run build && npm run start:prod",
     "prisma:generate": "prisma generate",
