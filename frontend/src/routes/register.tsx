@@ -83,7 +83,7 @@ function RegisterPage() {
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
               <div className='space-y-2'>
-                <Label htmlFor='name'>Name (optional)</Label>
+                <Label htmlFor='name'>Name</Label>
                 <div className='relative'>
                   <UserIcon className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                   <Input
