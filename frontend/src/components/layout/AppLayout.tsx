@@ -42,7 +42,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </Button>
                   </Link>
                   <span className='text-sm text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full'>
-                    {user.email}
+                    Hi {user.name}
                   </span>
                   <Button
                     variant='outline'
