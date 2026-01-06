@@ -15,7 +15,7 @@
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "ls -la dist/ && node dist/main",
     "railway:deploy": "npm run build && npm run prisma:deploy && npm run start:prod",
     "railway:start": "npm run build && npm run start:prod",
     "prisma:generate": "prisma generate",
