@@ -51,9 +51,11 @@
     "addTransaction": "Agregar transacción",
     "updateTransaction": "Actualizar Transacción",
     "history": "Historial",
+    "transactionHistory": "Historial de Transacciones",
     "transactionType": "Tipo de Transacción",
     "income": "Ingreso",
     "expense": "Gasto",
+    "expenses": "Gastos",
     "amount": "Cantidad",
     "description": "Descripción",
     "date": "Fecha",
@@ -75,7 +77,25 @@
     "deleteFailed": "Error al eliminar transacción",
     "createFailed": "Error al crear transacción",
     "deleteTransaction": "Eliminar Transacción",
-    "deleteTransactionConfirm": "¿Estás seguro de que deseas eliminar esta transacción? Esta acción no se puede deshacer."
+    "deleteTransactionConfirm": "¿Estás seguro de que deseas eliminar esta transacción? Esta acción no se puede deshacer.",
+    "quickFilters": {
+      "today": "Hoy",
+      "thisWeek": "Esta Semana",
+      "thisMonth": "Este Mes",
+      "lastMonth": "Mes Pasado",
+      "custom": "Personalizado"
+    },
+    "selectDates": "Seleccionar fechas",
+    "type": "Tipo",
+    "allTypes": "Todos los Tipos",
+    "payment": "Pago",
+    "allPayments": "Todos los Pagos",
+    "cashDebit": "Efectivo / Débito",
+    "creditCard": "Tarjeta de Crédito",
+    "transactionsFound": "{{count}} transacción encontrada",
+    "transactionsFound_plural": "{{count}} transacciones encontradas",
+    "noTransactionsFound": "No se encontraron transacciones",
+    "tryAdjustingFilters": "Intenta ajustar tus filtros o rango de fechas"
   },
   "creditCards": {
     "title": "Tarjetas de Crédito",

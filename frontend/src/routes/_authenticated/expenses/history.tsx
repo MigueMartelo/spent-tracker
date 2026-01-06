@@ -42,15 +42,22 @@ import {
   CreditCard as CreditCardIcon,
 } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_authenticated/expenses/history')({
   component: HistoryPage,
 });
 
-type QuickFilter = 'today' | 'this-week' | 'this-month' | 'last-month' | 'custom';
+type QuickFilter =
+  | 'today'
+  | 'this-week'
+  | 'this-month'
+  | 'last-month'
+  | 'custom';
 type CreditCardFilter = 'all' | 'none' | string; // 'none' = cash only, string = specific card ID
 
 function HistoryPage() {
+  const { t } = useTranslation();
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('this-month');
   const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
     const now = new Date();
@@ -60,7 +67,8 @@ function HistoryPage() {
     };
   });
   const [typeFilter, setTypeFilter] = useState<ExpenseType | 'all'>('all');
-  const [creditCardFilter, setCreditCardFilter] = useState<CreditCardFilter>('all');
+  const [creditCardFilter, setCreditCardFilter] =
+    useState<CreditCardFilter>('all');
 
   // Fetch all expenses
   const { data: expenses, isLoading } = useQuery({
@@ -98,7 +106,10 @@ function HistoryPage() {
         break;
       case 'last-month':
         const lastMonth = subMonths(today, 1);
-        setDateRange({ from: startOfMonth(lastMonth), to: endOfMonth(lastMonth) });
+        setDateRange({
+          from: startOfMonth(lastMonth),
+          to: endOfMonth(lastMonth),
+        });
         break;
       case 'custom':
         // Keep current range
@@ -108,40 +119,49 @@ function HistoryPage() {
   };
 
   // Filter expenses based on date range, type, and credit card
-  const filteredExpenses = expenses?.filter((expense: Expense) => {
-    const expenseDate = parseLocalDate(expense.date);
-    
-    // Date filter
-    if (dateRange?.from && dateRange?.to) {
-      const fromDate = new Date(dateRange.from.getFullYear(), dateRange.from.getMonth(), dateRange.from.getDate());
-      const toDate = new Date(dateRange.to.getFullYear(), dateRange.to.getMonth(), dateRange.to.getDate());
-      if (expenseDate < fromDate || expenseDate > toDate) {
+  const filteredExpenses =
+    expenses?.filter((expense: Expense) => {
+      const expenseDate = parseLocalDate(expense.date);
+
+      // Date filter
+      if (dateRange?.from && dateRange?.to) {
+        const fromDate = new Date(
+          dateRange.from.getFullYear(),
+          dateRange.from.getMonth(),
+          dateRange.from.getDate()
+        );
+        const toDate = new Date(
+          dateRange.to.getFullYear(),
+          dateRange.to.getMonth(),
+          dateRange.to.getDate()
+        );
+        if (expenseDate < fromDate || expenseDate > toDate) {
+          return false;
+        }
+      }
+
+      // Type filter
+      if (typeFilter !== 'all' && expense.type !== typeFilter) {
         return false;
       }
-    }
 
-    // Type filter
-    if (typeFilter !== 'all' && expense.type !== typeFilter) {
-      return false;
-    }
-
-    // Credit card filter
-    if (creditCardFilter !== 'all') {
-      if (creditCardFilter === 'none') {
-        // Only show expenses without credit card
-        if (expense.creditCardId !== null) {
-          return false;
-        }
-      } else {
-        // Show expenses with specific credit card
-        if (expense.creditCardId !== creditCardFilter) {
-          return false;
+      // Credit card filter
+      if (creditCardFilter !== 'all') {
+        if (creditCardFilter === 'none') {
+          // Only show expenses without credit card
+          if (expense.creditCardId !== null) {
+            return false;
+          }
+        } else {
+          // Show expenses with specific credit card
+          if (expense.creditCardId !== creditCardFilter) {
+            return false;
+          }
         }
       }
-    }
 
-    return true;
-  }) || [];
+      return true;
+    }) || [];
 
   // Sort by date (newest first), then by createdAt (most recent first)
   const sortedExpenses = [...filteredExpenses].sort((a, b) => {
@@ -168,20 +188,24 @@ function HistoryPage() {
   const balance = totals.income - totals.outcome;
 
   // Group expenses by date for display
-  const groupedExpenses = sortedExpenses.reduce((groups, expense) => {
-    const dateKey = expense.date.substring(0, 10);
-    if (!groups[dateKey]) {
-      groups[dateKey] = [];
-    }
-    groups[dateKey].push(expense);
-    return groups;
-  }, {} as Record<string, Expense[]>);
+  const groupedExpenses = sortedExpenses.reduce(
+    (groups, expense) => {
+      const dateKey = expense.date.substring(0, 10);
+      if (!groups[dateKey]) {
+        groups[dateKey] = [];
+      }
+      groups[dateKey].push(expense);
+      return groups;
+    },
+    {} as Record<string, Expense[]>
+  );
 
-  const dateRangeLabel = dateRange?.from && dateRange?.to
-    ? dateRange.from.getTime() === dateRange.to.getTime()
-      ? format(dateRange.from, 'MMM d, yyyy')
-      : `${format(dateRange.from, 'MMM d')} - ${format(dateRange.to, 'MMM d, yyyy')}`
-    : 'Select dates';
+  const dateRangeLabel =
+    dateRange?.from && dateRange?.to
+      ? dateRange.from.getTime() === dateRange.to.getTime()
+        ? format(dateRange.from, 'MMM d, yyyy')
+        : `${format(dateRange.from, 'MMM d')} - ${format(dateRange.to, 'MMM d, yyyy')}`
+      : t('expenses.selectDates');
 
   if (isLoading) {
     return (
@@ -204,12 +228,16 @@ function HistoryPage() {
       {/* Header */}
       <div className='flex items-center gap-3'>
         <Link to='/expenses'>
-          <Button variant='ghost' size='icon' className='shrink-0 h-11 w-11 sm:h-9 sm:w-9'>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='shrink-0 h-11 w-11 sm:h-9 sm:w-9'
+          >
             <ArrowLeft className='w-5 h-5' />
           </Button>
         </Link>
         <h1 className='text-xl md:text-2xl font-bold text-slate-800'>
-          Transaction History
+          {t('expenses.transactionHistory')}
         </h1>
       </div>
 
@@ -219,11 +247,26 @@ function HistoryPage() {
           {/* Quick Filters */}
           <div className='flex gap-2 overflow-x-auto pb-1 -mx-3 px-3 md:mx-0 md:px-0 scrollbar-hide'>
             {[
-              { value: 'today' as QuickFilter, label: 'Today' },
-              { value: 'this-week' as QuickFilter, label: 'This Week' },
-              { value: 'this-month' as QuickFilter, label: 'This Month' },
-              { value: 'last-month' as QuickFilter, label: 'Last Month' },
-              { value: 'custom' as QuickFilter, label: 'Custom' },
+              {
+                value: 'today' as QuickFilter,
+                label: t('expenses.quickFilters.today'),
+              },
+              {
+                value: 'this-week' as QuickFilter,
+                label: t('expenses.quickFilters.thisWeek'),
+              },
+              {
+                value: 'this-month' as QuickFilter,
+                label: t('expenses.quickFilters.thisMonth'),
+              },
+              {
+                value: 'last-month' as QuickFilter,
+                label: t('expenses.quickFilters.lastMonth'),
+              },
+              {
+                value: 'custom' as QuickFilter,
+                label: t('expenses.quickFilters.custom'),
+              },
             ].map((filter) => (
               <Button
                 key={filter.value}
@@ -267,24 +310,26 @@ function HistoryPage() {
             {/* Type Filter */}
             <Select
               value={typeFilter}
-              onValueChange={(value) => setTypeFilter(value as ExpenseType | 'all')}
+              onValueChange={(value) =>
+                setTypeFilter(value as ExpenseType | 'all')
+              }
             >
               <SelectTrigger className='w-full sm:w-[140px]'>
                 <Filter className='w-4 h-4 mr-2' />
-                <SelectValue placeholder='Type' />
+                <SelectValue placeholder={t('expenses.type')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='all'>All Types</SelectItem>
+                <SelectItem value='all'>{t('expenses.allTypes')}</SelectItem>
                 <SelectItem value={ExpenseType.INCOME}>
                   <span className='flex items-center gap-2'>
                     <TrendingUp className='w-3 h-3 text-emerald-600' />
-                    Income
+                    {t('expenses.income')}
                   </span>
                 </SelectItem>
                 <SelectItem value={ExpenseType.OUTCOME}>
                   <span className='flex items-center gap-2'>
                     <TrendingDown className='w-3 h-3 text-rose-600' />
-                    Expenses
+                    {t('expenses.expenses')}
                   </span>
                 </SelectItem>
               </SelectContent>
@@ -297,14 +342,14 @@ function HistoryPage() {
             >
               <SelectTrigger className='w-full sm:w-[160px]'>
                 <CreditCardIcon className='w-4 h-4 mr-2' />
-                <SelectValue placeholder='Payment' />
+                <SelectValue placeholder={t('expenses.payment')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='all'>All Payments</SelectItem>
+                <SelectItem value='all'>{t('expenses.allPayments')}</SelectItem>
                 <SelectItem value='none'>
                   <span className='flex items-center gap-2'>
                     <Wallet className='w-3 h-3 text-slate-500' />
-                    Cash / Debit
+                    {t('expenses.cashDebit')}
                   </span>
                 </SelectItem>
                 {creditCards.map((card) => (
@@ -312,7 +357,7 @@ function HistoryPage() {
                     <span className='flex items-center gap-2'>
                       <div
                         className='w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold'
-                        style={{ 
+                        style={{
                           backgroundColor: card.color,
                           color: card.textColor || '#FFFFFF',
                         }}
@@ -328,11 +373,15 @@ function HistoryPage() {
           </div>
 
           {/* Active Filters Display */}
-          {(typeFilter !== 'all' || creditCardFilter !== 'all' || quickFilter === 'custom') && (
+          {(typeFilter !== 'all' ||
+            creditCardFilter !== 'all' ||
+            quickFilter === 'custom') && (
             <div className='flex flex-wrap gap-2'>
               {typeFilter !== 'all' && (
                 <Badge variant='secondary' className='gap-1'>
-                  {typeFilter === ExpenseType.INCOME ? 'Income' : 'Expenses'}
+                  {typeFilter === ExpenseType.INCOME
+                    ? t('expenses.income')
+                    : t('expenses.expenses')}
                   <X
                     className='w-3 h-3 cursor-pointer hover:text-red-500'
                     onClick={() => setTypeFilter('all')}
@@ -341,9 +390,10 @@ function HistoryPage() {
               )}
               {creditCardFilter !== 'all' && (
                 <Badge variant='secondary' className='gap-1'>
-                  {creditCardFilter === 'none' 
-                    ? 'Cash / Debit' 
-                    : creditCards.find(c => c.id === creditCardFilter)?.name || 'Credit Card'}
+                  {creditCardFilter === 'none'
+                    ? t('expenses.cashDebit')
+                    : creditCards.find((c) => c.id === creditCardFilter)
+                        ?.name || t('expenses.creditCard')}
                   <X
                     className='w-3 h-3 cursor-pointer hover:text-red-500'
                     onClick={() => setCreditCardFilter('all')}
@@ -362,7 +412,9 @@ function HistoryPage() {
           <CardContent className='p-3 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
               <TrendingUp className='w-3 h-3 text-emerald-600' />
-              <span className='text-xs font-medium text-emerald-700'>Income</span>
+              <span className='text-xs font-medium text-emerald-700'>
+                {t('expenses.income')}
+              </span>
             </div>
             <p className='text-sm md:text-lg font-bold text-emerald-700 truncate'>
               {formatCurrency(totals.income)}
@@ -375,7 +427,9 @@ function HistoryPage() {
           <CardContent className='p-3 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
               <TrendingDown className='w-3 h-3 text-rose-600' />
-              <span className='text-xs font-medium text-rose-700'>Expenses</span>
+              <span className='text-xs font-medium text-rose-700'>
+                {t('expenses.expenses')}
+              </span>
             </div>
             <p className='text-sm md:text-lg font-bold text-rose-700 truncate'>
               {formatCurrency(totals.outcome)}
@@ -384,16 +438,25 @@ function HistoryPage() {
         </Card>
 
         {/* Balance Card */}
-        <Card className={`${balance >= 0 ? 'bg-blue-50/50 border-blue-200/50' : 'bg-amber-50/50 border-amber-200/50'}`}>
+        <Card
+          className={`${balance >= 0 ? 'bg-blue-50/50 border-blue-200/50' : 'bg-amber-50/50 border-amber-200/50'}`}
+        >
           <CardContent className='p-3 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
-              <Wallet className={`w-3 h-3 ${balance >= 0 ? 'text-blue-600' : 'text-amber-600'}`} />
-              <span className={`text-xs font-medium ${balance >= 0 ? 'text-blue-700' : 'text-amber-700'}`}>
-                Balance
+              <Wallet
+                className={`w-3 h-3 ${balance >= 0 ? 'text-blue-600' : 'text-amber-600'}`}
+              />
+              <span
+                className={`text-xs font-medium ${balance >= 0 ? 'text-blue-700' : 'text-amber-700'}`}
+              >
+                {t('expenses.balance')}
               </span>
             </div>
-            <p className={`text-sm md:text-lg font-bold truncate ${balance >= 0 ? 'text-blue-700' : 'text-amber-700'}`}>
-              {balance >= 0 ? '' : '-'}{formatCurrency(Math.abs(balance))}
+            <p
+              className={`text-sm md:text-lg font-bold truncate ${balance >= 0 ? 'text-blue-700' : 'text-amber-700'}`}
+            >
+              {balance >= 0 ? '' : '-'}
+              {formatCurrency(Math.abs(balance))}
             </p>
           </CardContent>
         </Card>
@@ -402,7 +465,7 @@ function HistoryPage() {
       {/* Results Count */}
       <div className='flex items-center justify-between'>
         <p className='text-sm text-slate-500'>
-          {filteredExpenses.length} transaction{filteredExpenses.length !== 1 ? 's' : ''} found
+          {t('expenses.transactionsFound', { count: filteredExpenses.length })}
         </p>
       </div>
 
@@ -411,9 +474,12 @@ function HistoryPage() {
         {Object.entries(groupedExpenses).map(([dateKey, dayExpenses]) => (
           <div key={dateKey} className='space-y-2'>
             <h3 className='text-xs font-semibold text-slate-500 uppercase tracking-wider sticky top-14 md:top-16 z-10 bg-slate-100/80 backdrop-blur-sm py-1 px-1 -mx-1 rounded'>
-              {format(parseLocalDate(dateKey + 'T00:00:00'), 'EEEE, MMMM d, yyyy')}
+              {format(
+                parseLocalDate(dateKey + 'T00:00:00'),
+                'EEEE, MMMM d, yyyy'
+              )}
             </h3>
-            
+
             {dayExpenses.map((expense) => (
               <Link
                 key={expense.id}
@@ -443,13 +509,20 @@ function HistoryPage() {
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-center gap-1.5 mb-0.5'>
                           <Badge
-                            variant={expense.type === ExpenseType.INCOME ? 'default' : 'destructive'}
+                            variant={
+                              expense.type === ExpenseType.INCOME
+                                ? 'default'
+                                : 'destructive'
+                            }
                             className='text-[10px] px-1.5 py-0'
                           >
                             {expense.type}
                           </Badge>
                           {expense.creditCard && (
-                            <CreditCardBadge creditCard={expense.creditCard} size='sm' />
+                            <CreditCardBadge
+                              creditCard={expense.creditCard}
+                              size='sm'
+                            />
                           )}
                         </div>
                         <p className='text-sm text-slate-600 truncate'>
@@ -466,7 +539,12 @@ function HistoryPage() {
                               : 'text-rose-600'
                           }`}
                         >
-                          {formatCurrencyWithSign(Number(expense.amount), expense.type === ExpenseType.INCOME ? 'income' : 'outcome')}
+                          {formatCurrencyWithSign(
+                            Number(expense.amount),
+                            expense.type === ExpenseType.INCOME
+                              ? 'income'
+                              : 'outcome'
+                          )}
                         </p>
                         <ChevronRight className='w-4 h-4 text-slate-400 hidden md:block' />
                       </div>
@@ -486,10 +564,10 @@ function HistoryPage() {
                 <CalendarIcon className='w-6 h-6 text-slate-400' />
               </div>
               <p className='text-slate-500 text-sm mb-1'>
-                No transactions found
+                {t('expenses.noTransactionsFound')}
               </p>
               <p className='text-slate-400 text-xs'>
-                Try adjusting your filters or date range
+                {t('expenses.tryAdjustingFilters')}
               </p>
             </CardContent>
           </Card>
@@ -498,4 +576,3 @@ function HistoryPage() {
     </div>
   );
 }
-
