@@ -29,13 +29,14 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const createExpenseSchema = (t: (key: string) => string) => z.object({
-  type: z.nativeEnum(ExpenseType),
-  amount: z.number().min(0.01, t('expenses.amountRequired')),
-  description: z.string().min(1, t('expenses.descriptionRequired')),
-  date: z.string().min(1, t('expenses.dateRequired')),
-  creditCardId: z.string().optional(),
-});
+const createExpenseSchema = (t: (key: string) => string) =>
+  z.object({
+    type: z.nativeEnum(ExpenseType),
+    amount: z.number().min(0.01, t('expenses.amountRequired')),
+    description: z.string().min(1, t('expenses.descriptionRequired')),
+    date: z.string().min(1, t('expenses.dateRequired')),
+    creditCardId: z.string().optional(),
+  });
 
 type ExpenseFormData = z.infer<ReturnType<typeof createExpenseSchema>>;
 
@@ -241,7 +242,9 @@ export function ExpenseForm({
                     onValueChange={(value) => setValue('creditCardId', value)}
                   >
                     <SelectTrigger className='h-11'>
-                      <SelectValue placeholder={t('creditCards.selectCreditCard')}>
+                      <SelectValue
+                        placeholder={t('creditCards.selectCreditCard')}
+                      >
                         {selectedCard && (
                           <div className='flex items-center gap-2'>
                             <div
