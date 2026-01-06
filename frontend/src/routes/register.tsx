@@ -19,14 +19,15 @@ import { toast } from 'sonner';
 import { User } from '@/types';
 import { Wallet, Mail, Lock, User as UserIcon } from 'lucide-react';
 import { Footer } from '@/components/layout/Footer';
+import { useTranslation } from 'react-i18next';
 
-const registerSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+const createRegisterSchema = (t: (key: string) => string) => z.object({
+  email: z.string().email(t('auth.invalidEmail')),
+  password: z.string().min(6, t('auth.passwordMinLength')),
   name: z.string().optional(),
 });
 
-type RegisterFormData = z.infer<typeof registerSchema>;
+type RegisterFormData = z.infer<ReturnType<typeof createRegisterSchema>>;
 
 export const Route = createFileRoute('/register')({
   component: RegisterPage,
@@ -35,18 +36,21 @@ export const Route = createFileRoute('/register')({
 function RegisterPage() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const { t } = useTranslation();
 
   const { mutate: register, isPending } = useMutation({
     mutationFn: authApi.register,
     onSuccess: (data) => {
       setUser(data.user as User);
-      toast.success('Account created successfully');
+      toast.success(t('auth.accountCreatedSuccess'));
       navigate({ to: '/expenses' });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to register');
+      toast.error(error.message || t('auth.registerFailed'));
     },
   });
+
+  const registerSchema = createRegisterSchema(t);
 
   const {
     register: registerField,
@@ -66,7 +70,7 @@ function RegisterPage() {
       <div className='p-4 md:p-6'>
         <div className='flex items-center gap-2 text-slate-800'>
           <Wallet className='w-6 h-6 text-emerald-600' />
-          <span className='font-bold text-lg'>Expense Tracker</span>
+          <span className='font-bold text-lg'>{t('app.name')}</span>
         </div>
       </div>
 
@@ -75,16 +79,16 @@ function RegisterPage() {
         <Card className='w-full max-w-md shadow-lg border-slate-200/50'>
           <CardHeader className='space-y-1 pb-4'>
             <CardTitle className='text-2xl font-bold text-center'>
-              Create an account
+              {t('auth.createAccount')}
             </CardTitle>
             <CardDescription className='text-center'>
-              Start tracking your expenses today
+              {t('auth.startTracking')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
               <div className='space-y-2'>
-                <Label htmlFor='name'>Name</Label>
+                <Label htmlFor='name'>{t('auth.name')}</Label>
                 <div className='relative'>
                   <UserIcon className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                   <Input
@@ -97,7 +101,7 @@ function RegisterPage() {
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='email'>Email</Label>
+                <Label htmlFor='email'>{t('auth.email')}</Label>
                 <div className='relative'>
                   <Mail className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                   <Input
@@ -114,7 +118,7 @@ function RegisterPage() {
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='password'>Password</Label>
+                <Label htmlFor='password'>{t('auth.password')}</Label>
                 <div className='relative'>
                   <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                   <Input
@@ -131,7 +135,7 @@ function RegisterPage() {
                   </p>
                 )}
                 <p className='text-xs text-slate-500'>
-                  Must be at least 6 characters
+                  {t('auth.passwordMinLength')}
                 </p>
               </div>
 
@@ -140,16 +144,16 @@ function RegisterPage() {
                 className='w-full h-11 text-base'
                 disabled={isPending}
               >
-                {isPending ? 'Creating account...' : 'Create account'}
+                {isPending ? t('auth.registering') : t('auth.register')}
               </Button>
 
               <p className='text-center text-sm text-slate-600 pt-2'>
-                Already have an account?{' '}
+                {t('auth.alreadyHaveAccount')}{' '}
                 <Link
                   to='/login'
                   className='font-medium text-emerald-600 hover:text-emerald-700 hover:underline'
                 >
-                  Sign in
+                  {t('auth.login')}
                 </Link>
               </p>
             </form>

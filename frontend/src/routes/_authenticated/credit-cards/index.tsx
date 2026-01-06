@@ -25,12 +25,14 @@ import {
   Pencil,
   Trash2,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_authenticated/credit-cards/')({
   component: CreditCardsPage,
 });
 
 function CreditCardsPage() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<CreditCard | undefined>();
@@ -46,11 +48,11 @@ function CreditCardsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['credit-cards'] });
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
-      toast.success('Credit card deleted successfully');
+      toast.success(t('creditCards.cardDeletedSuccess'));
       setDeleteCard(null);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete credit card');
+      toast.error(error.message || t('creditCards.deleteCardFailed'));
     },
   });
 
@@ -89,7 +91,7 @@ function CreditCardsPage() {
             </Button>
           </Link>
           <h1 className='text-xl md:text-2xl font-bold text-slate-800'>
-            Credit Cards
+            {t('creditCards.title')}
           </h1>
         </div>
         <Button
@@ -98,13 +100,13 @@ function CreditCardsPage() {
           className='gap-2 hidden md:flex'
         >
           <Plus className='w-4 h-4' />
-          Add Card
+          {t('creditCards.addCard')}
         </Button>
       </div>
 
       {/* Description */}
       <p className='text-sm text-slate-500'>
-        Manage your credit cards to track expenses paid with each card.
+        {t('creditCards.manageCards')}
       </p>
 
       {/* Credit Cards List */}
@@ -169,14 +171,14 @@ function CreditCardsPage() {
                 <CreditCardIcon className='w-7 h-7 text-slate-400' />
               </div>
               <h3 className='font-semibold text-slate-700 mb-1'>
-                No credit cards yet
+                {t('creditCards.noCreditCardsYet')}
               </h3>
               <p className='text-sm text-slate-500 mb-4'>
-                Add your first credit card to start tracking expenses by card.
+                {t('creditCards.addFirstCard')}
               </p>
               <Button onClick={() => setDialogOpen(true)} className='gap-2'>
                 <Plus className='w-4 h-4' />
-                Add Credit Card
+                {t('creditCards.addCreditCard')}
               </Button>
             </CardContent>
           </Card>
@@ -203,19 +205,18 @@ function CreditCardsPage() {
       <AlertDialog open={!!deleteCard} onOpenChange={() => setDeleteCard(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Credit Card</AlertDialogTitle>
+            <AlertDialogTitle>{t('creditCards.deleteCard')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{deleteCard?.name}"? Expenses
-              linked to this card will no longer show the card association.
+              {t('creditCards.deleteCardConfirm', { name: deleteCard?.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteCard && deleteMutation.mutate(deleteCard.id)}
               className='bg-red-600 hover:bg-red-700'
             >
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending ? t('common.deleting') : t('common.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

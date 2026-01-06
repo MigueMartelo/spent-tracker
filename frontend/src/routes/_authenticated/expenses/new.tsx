@@ -7,12 +7,14 @@ import { expensesApi } from '@/lib/api';
 import { toast } from 'sonner';
 import type { CreateExpenseDto } from '@/types';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_authenticated/expenses/new')({
   component: NewExpensePage,
 });
 
 function NewExpensePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -20,11 +22,11 @@ function NewExpensePage() {
     mutationFn: expensesApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
-      toast.success('Transaction added successfully');
+      toast.success(t('expenses.transactionAdded'));
       navigate({ to: '/expenses' });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to create transaction');
+      toast.error(error.message || t('expenses.createFailed'));
     },
   });
 
@@ -37,12 +39,12 @@ function NewExpensePage() {
       {/* Back Button */}
       <Link to='/expenses' className='inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 mb-4'>
         <ArrowLeft className='w-4 h-4' />
-        Back to Dashboard
+        {t('expenses.backToDashboard')}
       </Link>
 
       <Card className='shadow-lg border-slate-200/50'>
         <CardHeader className='pb-4'>
-          <CardTitle className='text-xl md:text-2xl'>Add Transaction</CardTitle>
+          <CardTitle className='text-xl md:text-2xl'>{t('expenses.addTransaction')}</CardTitle>
         </CardHeader>
         <CardContent>
           <ExpenseForm onSubmit={handleSubmit} isSubmitting={isPending} />

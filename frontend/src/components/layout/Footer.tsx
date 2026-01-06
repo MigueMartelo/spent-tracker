@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <div className='p-4 text-center text-xs text-slate-400'>
-      © {new Date().getFullYear()} Expense Tracker
+      {t('footer.copyright', { year: new Date().getFullYear() })}
       <br />
-      With ❤️ by{' '}
+      {t('footer.madeWith')}{' '}
       <a
         href='https://www.linkedin.com/in/miguemartelo/'
         target='_blank'

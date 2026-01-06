@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import type { CreditCard, CreateCreditCardDto } from '@/types';
 import { CreditCard as CreditCardIcon, Palette, Check, Type } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Preset background colors for easy selection
 const PRESET_COLORS = [
@@ -42,20 +43,20 @@ const TEXT_COLORS = [
   { value: '#FECACA', label: 'Light Red', bgForPreview: '#374151' },
 ];
 
-const creditCardSchema = z.object({
+const createCreditCardSchema = (t: (key: string) => string) => z.object({
   name: z
     .string()
-    .min(1, 'Name is required')
-    .max(50, 'Name must be less than 50 characters'),
+    .min(1, t('creditCards.nameRequired'))
+    .max(50, t('creditCards.nameMaxLength')),
   color: z
     .string()
-    .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Invalid color code'),
+    .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, t('creditCards.invalidColor')),
   textColor: z
     .string()
-    .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Invalid text color code'),
+    .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, t('creditCards.invalidTextColor')),
 });
 
-type CreditCardFormData = z.infer<typeof creditCardSchema>;
+type CreditCardFormData = z.infer<ReturnType<typeof createCreditCardSchema>>;
 
 interface CreditCardFormProps {
   creditCard?: CreditCard;
@@ -70,8 +71,11 @@ export function CreditCardForm({
   isSubmitting = false,
   onCancel,
 }: CreditCardFormProps) {
+  const { t } = useTranslation();
   const [showCustomColor, setShowCustomColor] = useState(false);
   const [showCustomTextColor, setShowCustomTextColor] = useState(false);
+
+  const creditCardSchema = createCreditCardSchema(t);
 
   const {
     register,
@@ -109,7 +113,7 @@ export function CreditCardForm({
     <form onSubmit={handleSubmit(onFormSubmit)} className='space-y-5'>
       {/* Name */}
       <div className='space-y-2'>
-        <Label htmlFor='name'>Card Name</Label>
+        <Label htmlFor='name'>{t('creditCards.cardName')}</Label>
         <div className='relative'>
           <CreditCardIcon className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
           <Input
@@ -127,7 +131,7 @@ export function CreditCardForm({
 
       {/* Preview */}
       <div className='space-y-2'>
-        <Label>Preview</Label>
+        <Label>{t('creditCards.preview')}</Label>
         <div className='flex items-center gap-3 p-4 bg-slate-50 rounded-lg border'>
           <div
             className='w-12 h-12 rounded-xl shadow-sm flex items-center justify-center font-bold text-xl shrink-0'
@@ -140,7 +144,7 @@ export function CreditCardForm({
           </div>
           <div className='flex-1 min-w-0'>
             <p className='text-sm font-medium text-slate-700 truncate'>
-              {watch('name') || 'Card Preview'}
+              {watch('name') || t('creditCards.cardPreview')}
             </p>
             <p className='text-xs text-slate-500'>
               Background: {selectedColor} · Text: {selectedTextColor}
@@ -151,7 +155,7 @@ export function CreditCardForm({
 
       {/* Background Color Selection */}
       <div className='space-y-2'>
-        <Label>Background Color</Label>
+        <Label>{t('creditCards.backgroundColor')}</Label>
 
         {/* Preset Colors Grid */}
         <div className='grid grid-cols-10 gap-1.5'>
@@ -181,7 +185,7 @@ export function CreditCardForm({
           className='flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors'
         >
           <Palette className='w-4 h-4' />
-          {showCustomColor ? 'Hide custom color' : 'Use custom color code'}
+          {showCustomColor ? t('creditCards.hideCustomColor') : t('creditCards.useCustomColor')}
         </button>
 
         {/* Custom Color Input */}
@@ -209,7 +213,7 @@ export function CreditCardForm({
 
       {/* Text Color Selection */}
       <div className='space-y-2'>
-        <Label>Text Color (for accessibility)</Label>
+        <Label>{t('creditCards.textColor')}</Label>
 
         {/* Preset Text Colors */}
         <div className='flex gap-2 flex-wrap'>
@@ -245,7 +249,7 @@ export function CreditCardForm({
           className='flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors'
         >
           <Type className='w-4 h-4' />
-          {showCustomTextColor ? 'Hide custom text color' : 'Use custom text color'}
+          {showCustomTextColor ? t('creditCards.hideCustomTextColor') : t('creditCards.useCustomTextColor')}
         </button>
 
         {/* Custom Text Color Input */}
@@ -280,7 +284,7 @@ export function CreditCardForm({
             onClick={onCancel}
             className='flex-1 h-11'
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
         )}
         <Button
@@ -289,10 +293,10 @@ export function CreditCardForm({
           className='flex-1 h-11'
         >
           {isSubmitting
-            ? 'Saving...'
+            ? t('common.saving')
             : creditCard
-              ? 'Update Card'
-              : 'Add Card'}
+              ? t('creditCards.updateCard')
+              : t('creditCards.addCard')}
         </Button>
       </div>
     </form>

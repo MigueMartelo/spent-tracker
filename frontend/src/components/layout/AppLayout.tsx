@@ -3,11 +3,14 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth';
 import { LogOut, Menu, X, Wallet, CreditCard } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Footer } from './Footer';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -27,22 +30,23 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               className='flex items-center gap-2 text-lg md:text-xl font-bold text-slate-800'
             >
               <Wallet className='w-5 h-5 md:w-6 md:h-6 text-emerald-600' />
-              <span className='hidden sm:inline'>Expense Tracker</span>
-              <span className='sm:hidden'>Expenses</span>
+              <span className='hidden sm:inline'>{t('app.name')}</span>
+              <span className='sm:hidden'>{t('app.nameShort')}</span>
             </Link>
 
             {/* Desktop Menu */}
             <div className='hidden md:flex items-center gap-4'>
               {user && (
                 <>
+                  <LanguageSwitcher />
                   <Link to='/credit-cards'>
                     <Button variant='ghost' size='sm' className='gap-2'>
                       <CreditCard className='w-4 h-4' />
-                      Credit Cards
+                      {t('creditCards.title')}
                     </Button>
                   </Link>
                   <span className='text-sm text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full'>
-                    Hi {user.name}
+                    {t('auth.hi')} {user.name}
                   </span>
                   <Button
                     variant='outline'
@@ -51,7 +55,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     className='gap-2'
                   >
                     <LogOut className='w-4 h-4' />
-                    Logout
+                    {t('auth.logout')}
                   </Button>
                 </>
               )}
@@ -77,8 +81,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               {user && (
                 <div className='space-y-3'>
                   <div className='px-1'>
+                    <LanguageSwitcher />
+                  </div>
+                  <div className='px-1'>
                     <p className='text-xs text-slate-500 uppercase tracking-wider mb-1'>
-                      Signed in as
+                      {t('auth.signedInAs')}
                     </p>
                     <p className='text-sm font-medium text-slate-800 truncate'>
                       {user.email}
@@ -94,7 +101,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       className='w-full gap-2 justify-center'
                     >
                       <CreditCard className='w-4 h-4' />
-                      Credit Cards
+                      {t('creditCards.title')}
                     </Button>
                   </Link>
                   <Button
@@ -104,7 +111,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     className='w-full gap-2 justify-center'
                   >
                     <LogOut className='w-4 h-4' />
-                    Logout
+                    {t('auth.logout')}
                   </Button>
                 </div>
               )}

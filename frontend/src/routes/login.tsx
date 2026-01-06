@@ -19,13 +19,15 @@ import { toast } from 'sonner';
 import { User } from '@/types';
 import { Wallet, Mail, Lock } from 'lucide-react';
 import { Footer } from '@/components/layout/Footer';
+import { useTranslation } from 'react-i18next';
 
-const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-});
+const createLoginSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().email(t('auth.invalidEmail')),
+    password: z.string().min(1, t('auth.passwordRequired')),
+  });
 
-type LoginFormData = z.infer<typeof loginSchema>;
+type LoginFormData = z.infer<ReturnType<typeof createLoginSchema>>;
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
@@ -34,18 +36,21 @@ export const Route = createFileRoute('/login')({
 function LoginPage() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const { t } = useTranslation();
 
   const { mutate: login, isPending } = useMutation({
     mutationFn: authApi.login,
     onSuccess: (data) => {
       setUser(data.user as User);
-      toast.success('Logged in successfully');
+      toast.success(t('auth.loggedInSuccess'));
       navigate({ to: '/expenses' });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to login');
+      toast.error(error.message || t('auth.loginFailed'));
     },
   });
+
+  const loginSchema = createLoginSchema(t);
 
   const {
     register,
@@ -65,7 +70,7 @@ function LoginPage() {
       <div className='p-4 md:p-6'>
         <div className='flex items-center gap-2 text-slate-800'>
           <Wallet className='w-6 h-6 text-emerald-600' />
-          <span className='font-bold text-lg'>Expense Tracker</span>
+          <span className='font-bold text-lg'>{t('app.name')}</span>
         </div>
       </div>
 
@@ -74,16 +79,16 @@ function LoginPage() {
         <Card className='w-full max-w-md shadow-lg border-slate-200/50'>
           <CardHeader className='space-y-1 pb-4'>
             <CardTitle className='text-2xl font-bold text-center'>
-              Welcome back
+              {t('auth.welcomeBack')}
             </CardTitle>
             <CardDescription className='text-center'>
-              Enter your credentials to access your account
+              {t('auth.enterCredentials')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
               <div className='space-y-2'>
-                <Label htmlFor='email'>Email</Label>
+                <Label htmlFor='email'>{t('auth.email')}</Label>
                 <div className='relative'>
                   <Mail className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                   <Input
@@ -100,7 +105,7 @@ function LoginPage() {
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='password'>Password</Label>
+                <Label htmlFor='password'>{t('auth.password')}</Label>
                 <div className='relative'>
                   <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                   <Input
@@ -123,16 +128,16 @@ function LoginPage() {
                 className='w-full h-11 text-base'
                 disabled={isPending}
               >
-                {isPending ? 'Signing in...' : 'Sign in'}
+                {isPending ? t('auth.loggingIn') : t('auth.login')}
               </Button>
 
               <p className='text-center text-sm text-slate-600 pt-2'>
-                Don't have an account?{' '}
+                {t('auth.dontHaveAccount')}{' '}
                 <Link
                   to='/register'
                   className='font-medium text-emerald-600 hover:text-emerald-700 hover:underline'
                 >
-                  Create account
+                  {t('auth.register')}
                 </Link>
               </p>
             </form>

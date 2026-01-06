@@ -2,10 +2,13 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import appCss from '../styles.css?url';
 import { AuthProvider } from '@/lib/auth';
 import { Toaster } from '@/components/ui/sonner';
+import '@/lib/i18n';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -42,8 +45,15 @@ const queryClient = new QueryClient({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { i18n } = useTranslation();
+  
+  useEffect(() => {
+    // Update html lang attribute when language changes
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
   return (
-    <html lang='en'>
+    <html lang={i18n.language}>
       <head>
         <HeadContent />
       </head>

@@ -19,12 +19,14 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { ArrowLeft, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_authenticated/expenses/$id')({
   component: EditExpensePage,
 });
 
 function EditExpensePage() {
+  const { t } = useTranslation();
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -39,11 +41,11 @@ function EditExpensePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
       queryClient.invalidateQueries({ queryKey: ['expense', id] });
-      toast.success('Transaction updated successfully');
+      toast.success(t('expenses.transactionUpdated'));
       navigate({ to: '/expenses' });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to update transaction');
+      toast.error(error.message || t('expenses.updateFailed'));
     },
   });
 
@@ -51,11 +53,11 @@ function EditExpensePage() {
     mutationFn: () => expensesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
-      toast.success('Transaction deleted');
+      toast.success(t('expenses.transactionDeleted'));
       navigate({ to: '/expenses' });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete transaction');
+      toast.error(error.message || t('expenses.deleteFailed'));
     },
   });
 
@@ -76,9 +78,9 @@ function EditExpensePage() {
             <div className='w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4'>
               <span className='text-2xl'>🔍</span>
             </div>
-            <p className='text-slate-500 mb-4'>Transaction not found</p>
+            <p className='text-slate-500 mb-4'>{t('expenses.transactionNotFound')}</p>
             <Button onClick={() => navigate({ to: '/expenses' })}>
-              Back to Dashboard
+              {t('expenses.backToDashboard')}
             </Button>
           </CardContent>
         </Card>
@@ -95,13 +97,13 @@ function EditExpensePage() {
       {/* Back Button */}
       <Link to='/expenses' className='inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900'>
         <ArrowLeft className='w-4 h-4' />
-        Back to Dashboard
+        {t('expenses.backToDashboard')}
       </Link>
 
       {/* Edit Form */}
       <Card className='shadow-lg border-slate-200/50'>
         <CardHeader className='pb-4'>
-          <CardTitle className='text-xl md:text-2xl'>Edit Transaction</CardTitle>
+          <CardTitle className='text-xl md:text-2xl'>{t('expenses.updateTransaction')}</CardTitle>
         </CardHeader>
         <CardContent>
           <ExpenseForm
@@ -117,9 +119,9 @@ function EditExpensePage() {
         <CardContent className='p-4'>
           <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3'>
             <div>
-              <p className='font-medium text-rose-900'>Delete Transaction</p>
+              <p className='font-medium text-rose-900'>{t('expenses.deleteTransaction')}</p>
               <p className='text-sm text-rose-700/70'>
-                This action cannot be undone
+                {t('expenses.deleteTransactionConfirm').split('.')[1]?.trim() || t('expenses.deleteTransactionConfirm')}
               </p>
             </div>
             <AlertDialog>
@@ -131,24 +133,23 @@ function EditExpensePage() {
                   className='gap-2 w-full sm:w-auto'
                 >
                   <Trash2 className='w-4 h-4' />
-                  {isDeleting ? 'Deleting...' : 'Delete'}
+                  {isDeleting ? t('common.deleting') : t('common.delete')}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent className='mx-4 sm:mx-0'>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete this transaction?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('expenses.deleteTransaction')}?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This will permanently remove this transaction from your
-                    records. This action cannot be undone.
+                    {t('expenses.deleteTransactionConfirm')}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className='flex-col sm:flex-row gap-2'>
-                  <AlertDialogCancel className='w-full sm:w-auto'>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel className='w-full sm:w-auto'>{t('common.cancel')}</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => deleteExpense()}
                     className='bg-rose-600 hover:bg-rose-700 w-full sm:w-auto'
                   >
-                    Delete
+                    {t('common.delete')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

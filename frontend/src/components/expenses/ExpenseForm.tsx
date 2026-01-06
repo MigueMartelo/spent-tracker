@@ -27,16 +27,17 @@ import {
   CreditCard as CreditCardIcon,
   Plus,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-const expenseSchema = z.object({
+const createExpenseSchema = (t: (key: string) => string) => z.object({
   type: z.nativeEnum(ExpenseType),
-  amount: z.number().min(0.01, 'Amount must be greater than 0'),
-  description: z.string().min(1, 'Description is required'),
-  date: z.string().min(1, 'Date is required'),
+  amount: z.number().min(0.01, t('expenses.amountRequired')),
+  description: z.string().min(1, t('expenses.descriptionRequired')),
+  date: z.string().min(1, t('expenses.dateRequired')),
   creditCardId: z.string().optional(),
 });
 
-type ExpenseFormData = z.infer<typeof expenseSchema>;
+type ExpenseFormData = z.infer<ReturnType<typeof createExpenseSchema>>;
 
 interface ExpenseFormProps {
   expense?: Expense;
@@ -49,6 +50,7 @@ export function ExpenseForm({
   onSubmit,
   isSubmitting = false,
 }: ExpenseFormProps) {
+  const { t } = useTranslation();
   const [useCreditCard, setUseCreditCard] = useState(
     expense?.creditCardId ? true : false
   );
@@ -58,6 +60,8 @@ export function ExpenseForm({
     queryKey: ['credit-cards'],
     queryFn: creditCardsApi.getAll,
   });
+
+  const expenseSchema = createExpenseSchema(t);
 
   const {
     register,
@@ -119,7 +123,7 @@ export function ExpenseForm({
       <form onSubmit={handleSubmit(onFormSubmit)} className='space-y-5'>
         {/* Type Selection */}
         <div className='space-y-2'>
-          <Label htmlFor='type'>Transaction Type</Label>
+          <Label htmlFor='type'>{t('expenses.transactionType')}</Label>
           <Select
             value={type}
             onValueChange={(value) => setValue('type', value as ExpenseType)}
@@ -131,13 +135,13 @@ export function ExpenseForm({
               <SelectItem value={ExpenseType.INCOME}>
                 <div className='flex items-center gap-2'>
                   <TrendingUp className='w-4 h-4 text-emerald-600' />
-                  <span>Income</span>
+                  <span>{t('expenses.income')}</span>
                 </div>
               </SelectItem>
               <SelectItem value={ExpenseType.OUTCOME}>
                 <div className='flex items-center gap-2'>
                   <TrendingDown className='w-4 h-4 text-rose-600' />
-                  <span>Expense</span>
+                  <span>{t('expenses.expense')}</span>
                 </div>
               </SelectItem>
             </SelectContent>
@@ -149,7 +153,7 @@ export function ExpenseForm({
 
         {/* Amount */}
         <div className='space-y-2'>
-          <Label htmlFor='amount'>Amount</Label>
+          <Label htmlFor='amount'>{t('expenses.amount')}</Label>
           <div className='relative'>
             <DollarSign className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
             <Input
@@ -168,7 +172,7 @@ export function ExpenseForm({
 
         {/* Description */}
         <div className='space-y-2'>
-          <Label htmlFor='description'>Description</Label>
+          <Label htmlFor='description'>{t('expenses.description')}</Label>
           <div className='relative'>
             <FileText className='absolute left-3 top-3 w-4 h-4 text-slate-400' />
             <Input
@@ -185,7 +189,7 @@ export function ExpenseForm({
 
         {/* Date */}
         <div className='space-y-2'>
-          <Label htmlFor='date'>Date</Label>
+          <Label htmlFor='date'>{t('expenses.date')}</Label>
           <div className='relative'>
             <Calendar className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
             <Input
@@ -211,7 +215,7 @@ export function ExpenseForm({
                   htmlFor='use-credit-card'
                   className='font-medium cursor-pointer'
                 >
-                  Pay with credit card
+                  {t('creditCards.payWithCreditCard')}
                 </Label>
               </div>
               <Switch
@@ -230,7 +234,7 @@ export function ExpenseForm({
                     onValueChange={(value) => setValue('creditCardId', value)}
                   >
                     <SelectTrigger className='h-11'>
-                      <SelectValue placeholder='Select a credit card'>
+                      <SelectValue placeholder={t('creditCards.selectCreditCard')}>
                         {selectedCard && (
                           <div className='flex items-center gap-2'>
                             <div
@@ -269,7 +273,7 @@ export function ExpenseForm({
                 ) : (
                   <div className='flex flex-col gap-2'>
                     <p className='text-sm text-slate-500'>
-                      No credit cards added yet.
+                      {t('creditCards.noCreditCards')}
                     </p>
                   </div>
                 )}
@@ -281,7 +285,7 @@ export function ExpenseForm({
                   className='flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 transition-colors'
                 >
                   <Plus className='w-3.5 h-3.5' />
-                  Add new credit card
+                  {t('creditCards.addNewCreditCard')}
                 </button>
               </div>
             )}
@@ -295,10 +299,10 @@ export function ExpenseForm({
           className='w-full h-12 text-base mt-6'
         >
           {isSubmitting
-            ? 'Saving...'
+            ? t('common.saving')
             : expense
-              ? 'Update Transaction'
-              : 'Add Transaction'}
+              ? t('expenses.updateTransaction')
+              : t('expenses.addTransaction')}
         </Button>
       </form>
 

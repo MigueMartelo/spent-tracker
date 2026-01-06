@@ -19,12 +19,14 @@ import {
   Calendar,
   History,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/_authenticated/expenses/')({
   component: ExpensesPage,
 });
 
 function ExpensesPage() {
+  const { t } = useTranslation();
   const { type } = Route.useSearch() as { type: ExpenseType | undefined };
   const expenseType = type;
 
@@ -123,21 +125,21 @@ function ExpensesPage() {
       {/* Header */}
       <div className='flex justify-between items-center'>
         <h1 className='text-2xl md:text-3xl font-bold text-slate-800'>
-          Dashboard
+          {t('expenses.dashboard')}
         </h1>
         <div className='flex items-center gap-2'>
           {/* History Button */}
           <Link to='/expenses/history'>
             <Button variant='outline' size='sm' className='gap-2'>
               <History className='w-4 h-4' />
-              <span>History</span>
+              <span>{t('expenses.history')}</span>
             </Button>
           </Link>
           {/* Desktop Add Button */}
           <Link to='/expenses/new' className='hidden md:block'>
             <Button className='gap-2'>
               <Plus className='w-4 h-4' />
-              Add Expense
+              {t('expenses.addExpense')}
             </Button>
           </Link>
         </div>
@@ -161,14 +163,14 @@ function ExpensesPage() {
                 <TrendingDown className='w-3 h-3 md:w-4 md:h-4 text-orange-600' />
               </div>
               <span className='text-xs md:text-sm font-medium text-orange-700'>
-                Today
+                {t('common.today')}
               </span>
             </div>
             <p className='text-base md:text-2xl font-bold text-orange-700 truncate'>
               {formatCurrency(todayOutcomes)}
             </p>
             <p className='text-[10px] md:text-xs text-orange-600/70 mt-0.5'>
-              Spent today
+              {t('expenses.spentToday')}
             </p>
           </CardContent>
         </Card>
@@ -181,14 +183,14 @@ function ExpensesPage() {
                 <TrendingUp className='w-3 h-3 md:w-4 md:h-4 text-emerald-600' />
               </div>
               <span className='text-xs md:text-sm font-medium text-emerald-700'>
-                Income
+                {t('expenses.income')}
               </span>
             </div>
             <p className='text-base md:text-2xl font-bold text-emerald-700 truncate'>
               {formatCurrency(monthlyTotals.income)}
             </p>
             <p className='text-[10px] md:text-xs text-emerald-600/70 mt-0.5'>
-              This month
+              {t('common.thisMonth')}
             </p>
           </CardContent>
         </Card>
@@ -201,14 +203,14 @@ function ExpensesPage() {
                 <TrendingDown className='w-3 h-3 md:w-4 md:h-4 text-rose-600' />
               </div>
               <span className='text-xs md:text-sm font-medium text-rose-700'>
-                Expenses
+                {t('expenses.expense')}
               </span>
             </div>
             <p className='text-base md:text-2xl font-bold text-rose-700 truncate'>
               {formatCurrency(monthlyTotals.outcome)}
             </p>
             <p className='text-[10px] md:text-xs text-rose-600/70 mt-0.5'>
-              This month
+              {t('common.thisMonth')}
             </p>
           </CardContent>
         </Card>
@@ -239,7 +241,7 @@ function ExpensesPage() {
                   monthlyBalance >= 0 ? 'text-blue-700' : 'text-amber-700'
                 }`}
               >
-                Balance
+                {t('expenses.balance')}
               </span>
             </div>
             <p
@@ -255,7 +257,7 @@ function ExpensesPage() {
                 monthlyBalance >= 0 ? 'text-blue-600/70' : 'text-amber-600/70'
               }`}
             >
-              This month
+              {t('common.thisMonth')}
             </p>
           </CardContent>
         </Card>
@@ -269,7 +271,7 @@ function ExpensesPage() {
             size='sm'
             className='whitespace-nowrap'
           >
-            All
+            {t('common.all')}
           </Button>
         </Link>
         <Link to='/expenses' search={{ type: ExpenseType.INCOME }}>
@@ -279,7 +281,7 @@ function ExpensesPage() {
             className='whitespace-nowrap gap-1.5'
           >
             <TrendingUp className='w-3.5 h-3.5' />
-            Income
+            {t('expenses.income')}
           </Button>
         </Link>
         <Link to='/expenses' search={{ type: ExpenseType.OUTCOME }}>
@@ -291,7 +293,7 @@ function ExpensesPage() {
             className='whitespace-nowrap gap-1.5'
           >
             <TrendingDown className='w-3.5 h-3.5' />
-            Expenses
+            {t('expenses.expense')}
           </Button>
         </Link>
       </div>
@@ -299,7 +301,7 @@ function ExpensesPage() {
       {/* Today's Transactions */}
       <div className='space-y-2 md:space-y-3'>
         <h2 className='text-sm font-semibold text-slate-500 uppercase tracking-wider'>
-          Today's Transactions
+          {t('expenses.todaysTransactions')}
         </h2>
 
         {recentExpenses?.map((expense) => (
@@ -386,12 +388,12 @@ function ExpensesPage() {
                 <Calendar className='w-5 h-5 md:w-6 md:h-6 text-slate-400' />
               </div>
               <p className='text-slate-500 text-sm mb-3'>
-                No transactions today
+                {t('expenses.noTransactionsToday')}
               </p>
               <Link to='/expenses/new'>
                 <Button size='sm' variant='outline' className='gap-2'>
                   <Plus className='w-4 h-4' />
-                  Add transaction
+                  {t('expenses.addTransaction')}
                 </Button>
               </Link>
             </CardContent>
