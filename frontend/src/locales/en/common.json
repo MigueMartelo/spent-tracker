@@ -95,7 +95,12 @@
     "transactionsFound": "{{count}} transaction found",
     "transactionsFound_plural": "{{count}} transactions found",
     "noTransactionsFound": "No transactions found",
-    "tryAdjustingFilters": "Try adjusting your filters or date range"
+    "tryAdjustingFilters": "Try adjusting your filters or date range",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "noCategory": "No category",
+    "noCategories": "No categories added yet.",
+    "addNewCategory": "Add new category"
   },
   "creditCards": {
     "title": "Credit Cards",
@@ -126,6 +131,24 @@
     "hideCustomColor": "Hide custom color",
     "useCustomTextColor": "Use custom text color",
     "hideCustomTextColor": "Hide custom text color"
+  },
+  "categories": {
+    "name": "Category Name",
+    "namePlaceholder": "e.g., Food, Services",
+    "nameRequired": "Name is required",
+    "nameMaxLength": "Name must be less than 50 characters",
+    "invalidColor": "Invalid color code",
+    "invalidTextColor": "Invalid text color code",
+    "backgroundColor": "Background Color",
+    "textColor": "Text Color (for accessibility)",
+    "preview": "Preview",
+    "categoryName": "Category Name",
+    "useCustomColor": "Use custom color code",
+    "hideCustomColor": "Hide custom color",
+    "useCustomTextColor": "Use custom text color",
+    "hideCustomTextColor": "Hide custom text color",
+    "createCategory": "Create Category",
+    "updateCategory": "Update Category"
   },
   "footer": {
     "copyright": "© {{year}} Expense Tracker",

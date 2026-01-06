@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CreditCardsModule } from './credit-cards/credit-cards.module';
     UsersModule,
     ExpensesModule,
     CreditCardsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

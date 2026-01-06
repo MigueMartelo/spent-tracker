@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CreditCardBadge } from '@/components/credit-cards/CreditCardBadge';
+import { CategoryBadge } from '@/components/categories/CategoryBadge';
 import { format } from 'date-fns';
 import { Link } from '@tanstack/react-router';
 import {
@@ -313,10 +314,10 @@ function ExpensesPage() {
           >
             <Card className='hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer active:scale-[0.99] touch-manipulation'>
               <CardContent className='p-3 md:p-4'>
-                <div className='flex items-center gap-3'>
+                <div className='flex items-start gap-3'>
                   {/* Icon */}
                   <div
-                    className={`p-2 md:p-2.5 rounded-xl ${
+                    className={`p-2 md:p-2.5 rounded-xl shrink-0 ${
                       expense.type === ExpenseType.INCOME
                         ? 'bg-emerald-100 text-emerald-600'
                         : 'bg-rose-100 text-rose-600'
@@ -331,36 +332,68 @@ function ExpensesPage() {
 
                   {/* Content */}
                   <div className='flex-1 min-w-0'>
-                    <div className='flex items-center gap-2 mb-0.5'>
+                    {/* Badges and Metadata - Top row */}
+                    <div className='flex flex-wrap items-center gap-1.5 md:gap-2 mb-1 md:mb-0.5'>
                       <Badge
                         variant={
                           expense.type === ExpenseType.INCOME
                             ? 'default'
                             : 'destructive'
                         }
-                        className='text-[10px] md:text-xs px-1.5 py-0'
+                        className='text-[10px] md:text-xs px-1.5 py-0 shrink-0'
                       >
                         {expense.type}
                       </Badge>
                       {expense.creditCard && (
-                        <CreditCardBadge
-                          creditCard={expense.creditCard}
-                          size='sm'
-                        />
+                        <div className='shrink-0'>
+                          <CreditCardBadge
+                            creditCard={expense.creditCard}
+                            size='sm'
+                          />
+                        </div>
                       )}
-                      <span className='text-xs text-slate-500'>
+                      {expense.category && (
+                        <div className='shrink-0'>
+                          <CategoryBadge
+                            category={expense.category}
+                            size='sm'
+                          />
+                        </div>
+                      )}
+                      <span className='text-[10px] md:text-xs text-slate-500 shrink-0'>
                         {format(parseLocalDate(expense.date), 'MMM dd')}
                       </span>
                     </div>
-                    <p className='text-sm text-slate-600 truncate'>
-                      {expense.description}
-                    </p>
+
+                    {/* Description - Mobile: Full width with amount, Desktop: Left */}
+                    <div className='flex items-start justify-between gap-2'>
+                      <p className='text-sm md:text-sm font-medium text-slate-800 flex-1 min-w-0'>
+                        {expense.description}
+                      </p>
+                      {/* Amount - Mobile: Right side, Desktop: Hidden (shown in right column) */}
+                      <div className='flex items-center gap-1.5 shrink-0 md:hidden'>
+                        <p
+                          className={`text-base font-semibold ${
+                            expense.type === ExpenseType.INCOME
+                              ? 'text-emerald-600'
+                              : 'text-rose-600'
+                          }`}
+                        >
+                          {formatCurrencyWithSign(
+                            Number(expense.amount),
+                            expense.type === ExpenseType.INCOME
+                              ? 'income'
+                              : 'outcome'
+                          )}
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Amount & Arrow */}
-                  <div className='flex items-center gap-2'>
+                  {/* Amount & Arrow - Desktop only */}
+                  <div className='hidden md:flex items-center gap-2 shrink-0'>
                     <p
-                      className={`text-base md:text-lg font-semibold ${
+                      className={`text-lg font-semibold ${
                         expense.type === ExpenseType.INCOME
                           ? 'text-emerald-600'
                           : 'text-rose-600'
@@ -373,7 +406,7 @@ function ExpensesPage() {
                           : 'outcome'
                       )}
                     </p>
-                    <ChevronRight className='w-4 h-4 text-slate-400 hidden md:block' />
+                    <ChevronRight className='w-4 h-4 text-slate-400' />
                   </div>
                 </div>
               </CardContent>

@@ -15,8 +15,9 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { ExpenseType, type Expense, type CreateExpenseDto } from '@/types';
-import { creditCardsApi } from '@/lib/api';
+import { creditCardsApi, categoriesApi } from '@/lib/api';
 import { CreditCardDialog } from '@/components/credit-cards/CreditCardDialog';
+import { CategoryDialog } from '@/components/categories/CategoryDialog';
 import { format } from 'date-fns';
 import {
   DollarSign,
@@ -36,6 +37,7 @@ const createExpenseSchema = (t: (key: string) => string) =>
     description: z.string().min(1, t('expenses.descriptionRequired')),
     date: z.string().min(1, t('expenses.dateRequired')),
     creditCardId: z.string().optional(),
+    categoryId: z.string().optional(),
   });
 
 type ExpenseFormData = z.infer<ReturnType<typeof createExpenseSchema>>;
@@ -56,10 +58,16 @@ export function ExpenseForm({
     expense?.creditCardId ? true : false
   );
   const [creditCardDialogOpen, setCreditCardDialogOpen] = useState(false);
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
 
   const { data: creditCards = [] } = useQuery({
     queryKey: ['credit-cards'],
     queryFn: creditCardsApi.getAll,
+  });
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: categoriesApi.getAll,
   });
 
   const expenseSchema = createExpenseSchema(t);
@@ -86,6 +94,7 @@ export function ExpenseForm({
           description: expense.description,
           date: parseLocalDateString(expense.date),
           creditCardId: expense.creditCardId || undefined,
+          categoryId: expense.categoryId || undefined,
         }
       : {
           type: ExpenseType.OUTCOME,
@@ -96,6 +105,7 @@ export function ExpenseForm({
 
   const type = watch('type');
   const selectedCreditCardId = watch('creditCardId');
+  const selectedCategoryId = watch('categoryId');
 
   // Reset credit card when switching to income
   useEffect(() => {
@@ -119,11 +129,16 @@ export function ExpenseForm({
       description: data.description,
       date: new Date(data.date).toISOString(),
       creditCardId: useCreditCard ? data.creditCardId : undefined,
+      categoryId: data.categoryId,
     });
   };
 
   const selectedCard = creditCards.find(
     (card) => card.id === selectedCreditCardId
+  );
+
+  const selectedCategory = categories.find(
+    (category) => category.id === selectedCategoryId
   );
 
   return (
@@ -302,6 +317,82 @@ export function ExpenseForm({
           </div>
         )}
 
+        {/* Category Section */}
+        <div className='space-y-3 pt-2'>
+          <div className='space-y-2'>
+            <Label htmlFor='category'>{t('expenses.category')}</Label>
+            {categories.length > 0 ? (
+              <Select
+                value={selectedCategoryId || '__none__'}
+                onValueChange={(value) =>
+                  setValue(
+                    'categoryId',
+                    value === '__none__' ? undefined : value
+                  )
+                }
+              >
+                <SelectTrigger className='h-11'>
+                  <SelectValue placeholder={t('expenses.selectCategory')}>
+                    {selectedCategory && (
+                      <div className='flex items-center gap-2'>
+                        <div
+                          className='w-6 h-6 rounded flex items-center justify-center text-xs font-bold'
+                          style={{
+                            backgroundColor: selectedCategory.color,
+                            color: selectedCategory.textColor || '#FFFFFF',
+                          }}
+                        >
+                          {selectedCategory.name.charAt(0).toUpperCase()}
+                        </div>
+                        <span>{selectedCategory.name}</span>
+                      </div>
+                    )}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='__none__'>
+                    <span className='text-slate-400'>
+                      {t('expenses.noCategory')}
+                    </span>
+                  </SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      <div className='flex items-center gap-2'>
+                        <div
+                          className='w-6 h-6 rounded flex items-center justify-center text-xs font-bold'
+                          style={{
+                            backgroundColor: category.color,
+                            color: category.textColor || '#FFFFFF',
+                          }}
+                        >
+                          {category.name.charAt(0).toUpperCase()}
+                        </div>
+                        <span>{category.name}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <div className='flex flex-col gap-2'>
+                <p className='text-sm text-slate-500'>
+                  {t('expenses.noCategories')}
+                </p>
+              </div>
+            )}
+
+            {/* Add new category */}
+            <button
+              type='button'
+              onClick={() => setCategoryDialogOpen(true)}
+              className='flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 transition-colors'
+            >
+              <Plus className='w-3.5 h-3.5' />
+              {t('expenses.addNewCategory')}
+            </button>
+          </div>
+        </div>
+
         {/* Submit Button */}
         <Button
           type='submit'
@@ -320,6 +411,12 @@ export function ExpenseForm({
       <CreditCardDialog
         open={creditCardDialogOpen}
         onOpenChange={setCreditCardDialogOpen}
+      />
+
+      {/* Category Dialog */}
+      <CategoryDialog
+        open={categoryDialogOpen}
+        onOpenChange={setCategoryDialogOpen}
       />
     </>
   );

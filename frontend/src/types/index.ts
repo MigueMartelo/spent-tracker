@@ -21,6 +21,16 @@ export interface CreditCard {
   updatedAt: string;
 }
 
+export interface Category {
+  id: string;
+  userId: string;
+  name: string;
+  color: string;
+  textColor: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Expense {
   id: string;
   userId: string;
@@ -30,6 +40,8 @@ export interface Expense {
   date: string; // ISO date string
   creditCardId: string | null;
   creditCard: CreditCard | null;
+  categoryId: string | null;
+  category: Category | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,6 +64,7 @@ export interface CreateExpenseDto {
   description: string;
   date: string;
   creditCardId?: string;
+  categoryId?: string;
 }
 
 export interface UpdateExpenseDto extends Partial<CreateExpenseDto> {}
@@ -63,6 +76,14 @@ export interface CreateCreditCardDto {
 }
 
 export interface UpdateCreditCardDto extends Partial<CreateCreditCardDto> {}
+
+export interface CreateCategoryDto {
+  name: string;
+  color: string;
+  textColor?: string;
+}
+
+export interface UpdateCategoryDto extends Partial<CreateCategoryDto> {}
 
 export interface ExpenseFilters {
   type?: ExpenseType;

@@ -16,6 +16,7 @@ model User {
   updatedAt    DateTime     @updatedAt @map("updated_at")
   expenses     Expense[]
   creditCards  CreditCard[]
+  categories   Category[]
 
   @@map("users")
 }
@@ -43,15 +44,33 @@ model Expense {
   description  String
   date         DateTime    @db.Date
   creditCardId String?     @map("credit_card_id")
+  categoryId   String?     @map("category_id")
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt @map("updated_at")
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   creditCard   CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: SetNull)
+  category     Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([date])
   @@index([creditCardId])
+  @@index([categoryId])
   @@map("expenses")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  name      String
+  color     String    // Hex background color (e.g., #FF5733)
+  textColor String    @default("#FFFFFF") @map("text_color") // Hex text color for accessibility
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenses  Expense[]
+
+  @@index([userId])
+  @@map("categories")
 }
 
 enum ExpenseType {

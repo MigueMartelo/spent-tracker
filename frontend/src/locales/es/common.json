@@ -95,7 +95,12 @@
     "transactionsFound": "{{count}} transacción encontrada",
     "transactionsFound_plural": "{{count}} transacciones encontradas",
     "noTransactionsFound": "No se encontraron transacciones",
-    "tryAdjustingFilters": "Intenta ajustar tus filtros o rango de fechas"
+    "tryAdjustingFilters": "Intenta ajustar tus filtros o rango de fechas",
+    "category": "Categoría",
+    "selectCategory": "Seleccionar una categoría",
+    "noCategory": "Sin categoría",
+    "noCategories": "Aún no se han agregado categorías.",
+    "addNewCategory": "Agregar nueva categoría"
   },
   "creditCards": {
     "title": "Tarjetas de Crédito",
@@ -126,6 +131,24 @@
     "hideCustomColor": "Ocultar color personalizado",
     "useCustomTextColor": "Usar color de texto personalizado",
     "hideCustomTextColor": "Ocultar color de texto personalizado"
+  },
+  "categories": {
+    "name": "Nombre de Categoría",
+    "namePlaceholder": "ej., Comida, Servicios",
+    "nameRequired": "El nombre es requerido",
+    "nameMaxLength": "El nombre debe tener menos de 50 caracteres",
+    "invalidColor": "Código de color inválido",
+    "invalidTextColor": "Código de color de texto inválido",
+    "backgroundColor": "Color de Fondo",
+    "textColor": "Color de Texto (para accesibilidad)",
+    "preview": "Vista Previa",
+    "categoryName": "Nombre de Categoría",
+    "useCustomColor": "Usar código de color personalizado",
+    "hideCustomColor": "Ocultar color personalizado",
+    "useCustomTextColor": "Usar color de texto personalizado",
+    "hideCustomTextColor": "Ocultar color de texto personalizado",
+    "createCategory": "Crear Categoría",
+    "updateCategory": "Actualizar Categoría"
   },
   "footer": {
     "copyright": "© {{year}} Rastreador de Gastos",

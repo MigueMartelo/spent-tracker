@@ -28,4 +28,8 @@ export class CreateExpenseDto {
   @IsOptional()
   @IsUUID()
   creditCardId?: string;
+
+  @IsOptional()
+  @IsUUID()
+  categoryId?: string;
 }

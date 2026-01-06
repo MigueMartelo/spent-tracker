@@ -27,9 +27,11 @@ export class ExpensesService {
         description: createExpenseDto.description,
         date: new Date(createExpenseDto.date),
         creditCardId: createExpenseDto.creditCardId || null,
+        categoryId: createExpenseDto.categoryId || null,
       },
       include: {
         creditCard: true,
+        category: true,
       },
     });
   }
@@ -53,6 +55,7 @@ export class ExpensesService {
       where,
       include: {
         creditCard: true,
+        category: true,
       },
       orderBy: {
         date: 'desc',
@@ -65,6 +68,7 @@ export class ExpensesService {
       where: { id },
       include: {
         creditCard: true,
+        category: true,
       },
     });
 
@@ -99,12 +103,22 @@ export class ExpensesService {
         updateData.creditCard = { disconnect: true };
       }
     }
+    if (updateExpenseDto.categoryId !== undefined) {
+      if (updateExpenseDto.categoryId) {
+        updateData.category = {
+          connect: { id: updateExpenseDto.categoryId },
+        };
+      } else {
+        updateData.category = { disconnect: true };
+      }
+    }
 
     return this.prisma.expense.update({
       where: { id },
       data: updateData,
       include: {
         creditCard: true,
+        category: true,
       },
     });
   }

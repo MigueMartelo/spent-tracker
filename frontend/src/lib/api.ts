@@ -9,6 +9,9 @@ import type {
   CreditCard,
   CreateCreditCardDto,
   UpdateCreditCardDto,
+  Category,
+  CreateCategoryDto,
+  UpdateCategoryDto,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -151,6 +154,33 @@ export const creditCardsApi = {
   },
   delete: async (id: string): Promise<CreditCard> => {
     return apiRequest<CreditCard>(`/credit-cards/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+// Categories API
+export const categoriesApi = {
+  getAll: async (): Promise<Category[]> => {
+    return apiRequest<Category[]>('/categories');
+  },
+  getById: async (id: string): Promise<Category> => {
+    return apiRequest<Category>(`/categories/${id}`);
+  },
+  create: async (data: CreateCategoryDto): Promise<Category> => {
+    return apiRequest<Category>('/categories', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+  update: async (id: string, data: UpdateCategoryDto): Promise<Category> => {
+    return apiRequest<Category>(`/categories/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+  delete: async (id: string): Promise<Category> => {
+    return apiRequest<Category>(`/categories/${id}`, {
       method: 'DELETE',
     });
   },
