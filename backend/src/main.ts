@@ -11,9 +11,25 @@ async function bootstrap() {
     : ['http://localhost:5173'];
 
   console.log('🌐 Allowed CORS origins:', allowedOrigins);
+  console.log('🌐 FRONTEND_URL env:', process.env.FRONTEND_URL);
 
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) {
+        return callback(null, true);
+      }
+      
+      // Check if origin is in allowed list
+      if (allowedOrigins.includes(origin)) {
+        console.log('✅ CORS allowed for origin:', origin);
+        return callback(null, true);
+      }
+      
+      console.log('❌ CORS blocked for origin:', origin);
+      console.log('❌ Allowed origins are:', allowedOrigins);
+      callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
