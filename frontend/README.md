@@ -12,12 +12,12 @@ React SPA for the Spent Tracker application.
 
 ## 🚀 Getting Started
 
-1. **Install dependencies**
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-2. **Start dev server**
+2. Start dev server:
    ```bash
    npm run dev
    ```
@@ -31,15 +31,16 @@ React SPA for the Spent Tracker application.
 | `npm run dev` | Start dev server |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview build |
-| `npm run test` | Run tests |
 
 ## 🗂️ Routes
 
 | Route | Description |
 |-------|-------------|
-| `/login` | Login page |
-| `/register` | Registration |
+| `/login` | Login |
+| `/register` | Register |
 | `/expenses` | Dashboard |
-| `/expenses/new` | Create transaction |
-| `/expenses/:id` | View/edit transaction |
+| `/expenses/new` | Create expense |
+| `/expenses/history` | Expense history |
+| `/expenses/:id` | View/edit expense |
 | `/credit-cards` | Manage credit cards |
+| `/categories` | Manage categories |

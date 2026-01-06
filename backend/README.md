@@ -10,23 +10,23 @@ NestJS API for the Spent Tracker application.
 
 ## 🚀 Getting Started
 
-1. **Install dependencies**
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-2. **Configure environment** - Create `.env`:
+2. Create `.env`:
    ```env
    DATABASE_URL="postgresql://user:password@localhost:5432/spent_tracker"
    JWT_SECRET="your-secret-key"
    ```
 
-3. **Run migrations**
+3. Run migrations:
    ```bash
    npm run prisma:migrate
    ```
 
-4. **Start server**
+4. Start server:
    ```bash
    npm run dev
    ```
@@ -39,11 +39,12 @@ NestJS API for the Spent Tracker application.
 | `npm run build` | Build for production |
 | `npm run prisma:migrate` | Run migrations |
 | `npm run prisma:studio` | Open Prisma Studio |
-| `npm run test` | Run tests |
 
 ## 📝 API Endpoints
 
-- `POST /auth/register` - Create account
+- `POST /auth/register` - Register
 - `POST /auth/login` - Login
+- `GET /auth/me` - Get current user
 - `GET/POST/PATCH/DELETE /expenses` - Manage expenses
 - `GET/POST/PATCH/DELETE /credit-cards` - Manage credit cards
+- `GET/POST/PATCH/DELETE /categories` - Manage categories
