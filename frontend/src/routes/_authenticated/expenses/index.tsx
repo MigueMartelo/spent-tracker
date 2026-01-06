@@ -62,18 +62,21 @@ function ExpensesPage() {
     return year === currentYear && month === currentMonth + 1;
   });
 
-  // Get recent expenses sorted by date (most recent first), then by createdAt
+  // Get today's expenses sorted by date/time (most recent first)
   const recentExpenses = expenses
-    ?.slice()
-    .sort((a, b) => {
-      // First sort by date (most recent first)
-      const dateA = parseLocalDate(a.date).getTime();
-      const dateB = parseLocalDate(b.date).getTime();
-      if (dateB !== dateA) return dateB - dateA;
-      // If same date, sort by createdAt (most recent first)
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    ?.filter((expense) => {
+      const dateStr = getDateString(expense.date);
+      return dateStr === todayString;
     })
-    .slice(0, 10); // Show last 10 expenses
+    .slice()
+    .sort((a, b) => {
+      // First sort by transaction date/time (most recent first)
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      if (dateB !== dateA) return dateB - dateA;
+      // If same date/time, sort by createdAt (most recent first)
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 
   const monthlyTotals = currentMonthExpenses?.reduce(
     (acc, expense) => {
@@ -127,7 +130,7 @@ function ExpensesPage() {
           <Link to='/expenses/history'>
             <Button variant='outline' size='sm' className='gap-2'>
               <History className='w-4 h-4' />
-              <span className='hidden sm:inline'>History</span>
+              <span>History</span>
             </Button>
           </Link>
           {/* Desktop Add Button */}
@@ -140,10 +143,12 @@ function ExpensesPage() {
         </div>
       </div>
 
-      {/* Current Month Indicator */}
+      {/* Current Day Indicator */}
       <div className='flex items-center gap-2 text-slate-600'>
         <Calendar className='w-4 h-4' />
-        <span className='text-sm font-medium'>{currentMonthName}</span>
+        <span className='text-sm font-medium'>
+          {format(now, 'EEEE, MMMM dd, yyyy')}
+        </span>
       </div>
 
       {/* Summary Cards */}
@@ -291,10 +296,10 @@ function ExpensesPage() {
         </Link>
       </div>
 
-      {/* Recent Transactions */}
+      {/* Today's Transactions */}
       <div className='space-y-2 md:space-y-3'>
         <h2 className='text-sm font-semibold text-slate-500 uppercase tracking-wider'>
-          Recent Transactions
+          Today's Transactions
         </h2>
 
         {recentExpenses?.map((expense) => (
@@ -380,7 +385,9 @@ function ExpensesPage() {
               <div className='w-10 h-10 md:w-12 md:h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3'>
                 <Calendar className='w-5 h-5 md:w-6 md:h-6 text-slate-400' />
               </div>
-              <p className='text-slate-500 text-sm mb-3'>No transactions yet</p>
+              <p className='text-slate-500 text-sm mb-3'>
+                No transactions today
+              </p>
               <Link to='/expenses/new'>
                 <Button size='sm' variant='outline' className='gap-2'>
                   <Plus className='w-4 h-4' />
