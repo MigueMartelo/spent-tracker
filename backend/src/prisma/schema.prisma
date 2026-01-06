@@ -7,30 +7,49 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  email        String    @unique
-  passwordHash String    @map("password_hash")
+  id           String       @id @default(uuid())
+  email        String       @unique
+  passwordHash String       @map("password_hash")
   name         String?
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
   expenses     Expense[]
+  creditCards  CreditCard[]
 
   @@map("users")
 }
 
+model CreditCard {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  name      String
+  color     String    // Hex background color (e.g., #FF5733)
+  textColor String    @default("#FFFFFF") @map("text_color") // Hex text color for accessibility
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenses  Expense[]
+
+  @@index([userId])
+  @@map("credit_cards")
+}
+
 model Expense {
-  id          String      @id @default(uuid())
-  userId      String      @map("user_id")
-  type        ExpenseType
-  amount      Decimal     @db.Decimal(10, 2)
-  description String?
-  date        DateTime    @db.Date
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String      @id @default(uuid())
+  userId       String      @map("user_id")
+  type         ExpenseType
+  amount       Decimal     @db.Decimal(10, 2)
+  description  String
+  date         DateTime    @db.Date
+  creditCardId String?     @map("credit_card_id")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  creditCard   CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([date])
+  @@index([creditCardId])
   @@map("expenses")
 }
 
