@@ -147,11 +147,20 @@ function ExpensesPage() {
       </div>
 
       {/* Current Day Indicator */}
-      <div className='flex items-center gap-2 text-slate-600'>
-        <Calendar className='w-4 h-4' />
-        <span className='text-sm font-medium'>
-          {format(now, 'EEEE, MMMM dd, yyyy')}
-        </span>
+      <div className='flex items-center justify-between gap-2'>
+        <div className='flex items-center gap-2 text-slate-600'>
+          <Calendar className='w-4 h-4' />
+          <span className='text-sm font-medium'>
+            {format(now, 'EEEE, MMMM dd, yyyy')}
+          </span>
+        </div>
+        {/* Mobile Add Button */}
+        <Link to='/expenses/new' className='md:hidden'>
+          <Button size='sm' className='gap-1.5'>
+            <Plus className='w-4 h-4' />
+            {t('expenses.addExpense')}
+          </Button>
+        </Link>
       </div>
 
       {/* Summary Cards */}
@@ -434,18 +443,6 @@ function ExpensesPage() {
         )}
       </div>
 
-      {/* Mobile Floating Action Button */}
-      <Link
-        to='/expenses/new'
-        className='md:hidden fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-4 z-50'
-      >
-        <Button
-          size='lg'
-          className='h-14 w-14 rounded-full bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:shadow-emerald-600/40 transition-all'
-        >
-          <Plus className='w-6 h-6' />
-        </Button>
-      </Link>
     </div>
   );
 }
