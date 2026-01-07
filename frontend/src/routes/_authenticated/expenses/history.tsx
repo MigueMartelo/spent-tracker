@@ -244,7 +244,7 @@ function HistoryPage() {
 
       {/* Filters Section */}
       <Card className='bg-slate-50/50'>
-        <CardContent className='p-3 md:p-4 space-y-3'>
+        <CardContent className='p-4 md:p-4 space-y-3'>
           {/* Quick Filters */}
           <div className='flex gap-2 overflow-x-auto pb-1 -mx-3 px-3 md:mx-0 md:px-0 scrollbar-hide'>
             {[
@@ -357,7 +357,7 @@ function HistoryPage() {
                   <SelectItem key={card.id} value={card.id}>
                     <span className='flex items-center gap-2'>
                       <div
-                        className='w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold'
+                        className='w-5 h-5 rounded flex items-center justify-center text-xs font-bold'
                         style={{
                           backgroundColor: card.color,
                           color: card.textColor || '#FFFFFF',
@@ -407,10 +407,10 @@ function HistoryPage() {
       </Card>
 
       {/* Summary Cards for Filtered Period */}
-      <div className='grid grid-cols-3 gap-2 md:gap-4'>
+      <div className='grid grid-cols-3 gap-3 md:gap-4'>
         {/* Income Card */}
         <Card className='bg-emerald-50/50 border-emerald-200/50'>
-          <CardContent className='p-3 md:p-4'>
+          <CardContent className='p-4 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
               <TrendingUp className='w-3 h-3 text-emerald-600' />
               <span className='text-xs font-medium text-emerald-700'>
@@ -425,7 +425,7 @@ function HistoryPage() {
 
         {/* Outcome Card */}
         <Card className='bg-rose-50/50 border-rose-200/50'>
-          <CardContent className='p-3 md:p-4'>
+          <CardContent className='p-4 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
               <TrendingDown className='w-3 h-3 text-rose-600' />
               <span className='text-xs font-medium text-rose-700'>
@@ -442,7 +442,7 @@ function HistoryPage() {
         <Card
           className={`${balance >= 0 ? 'bg-blue-50/50 border-blue-200/50' : 'bg-amber-50/50 border-amber-200/50'}`}
         >
-          <CardContent className='p-3 md:p-4'>
+          <CardContent className='p-4 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
               <Wallet
                 className={`w-3 h-3 ${balance >= 0 ? 'text-blue-600' : 'text-amber-600'}`}
@@ -489,7 +489,7 @@ function HistoryPage() {
                 className='block'
               >
                 <Card className='hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer active:scale-[0.99] touch-manipulation'>
-                  <CardContent className='p-3 md:p-4'>
+                  <CardContent className='p-4 md:p-4'>
                     <div className='flex items-start gap-3'>
                       {/* Icon */}
                       <div
@@ -516,7 +516,7 @@ function HistoryPage() {
                                 ? 'default'
                                 : 'destructive'
                             }
-                            className='text-[10px] md:text-xs px-1.5 py-0 shrink-0'
+                            className='text-xs px-1.5 py-0 shrink-0'
                           >
                             {expense.type}
                           </Badge>
@@ -536,7 +536,7 @@ function HistoryPage() {
                               />
                             </div>
                           )}
-                          <span className='text-[10px] md:text-xs text-slate-500 shrink-0'>
+                          <span className='text-xs text-slate-500 shrink-0'>
                             {format(parseLocalDate(expense.date), 'MMM dd')}
                           </span>
                         </div>

@@ -109,7 +109,7 @@ function ExpensesPage() {
       <div className='container mx-auto px-4 py-4 md:py-6 space-y-4'>
         <Skeleton className='h-8 w-48' />
         <Skeleton className='h-6 w-32' />
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4'>
           <Skeleton className='h-20 md:h-28' />
           <Skeleton className='h-20 md:h-28' />
           <Skeleton className='h-20 md:h-28' />
@@ -158,7 +158,7 @@ function ExpensesPage() {
       <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4'>
         {/* Today's Outcomes Card */}
         <Card className='bg-gradient-to-br from-orange-50 to-orange-100/50 border-orange-200/50'>
-          <CardContent className='p-3 md:p-6'>
+          <CardContent className='p-4 md:p-6'>
             <div className='flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2'>
               <div className='p-1 md:p-1.5 bg-orange-500/10 rounded-md'>
                 <TrendingDown className='w-3 h-3 md:w-4 md:h-4 text-orange-600' />
@@ -170,7 +170,7 @@ function ExpensesPage() {
             <p className='text-base md:text-2xl font-bold text-orange-700 truncate'>
               {formatCurrency(todayOutcomes)}
             </p>
-            <p className='text-[10px] md:text-xs text-orange-600/70 mt-0.5'>
+            <p className='text-xs text-orange-600/70 mt-0.5'>
               {t('expenses.spentToday')}
             </p>
           </CardContent>
@@ -178,7 +178,7 @@ function ExpensesPage() {
 
         {/* Monthly Income Card */}
         <Card className='bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200/50'>
-          <CardContent className='p-3 md:p-6'>
+          <CardContent className='p-4 md:p-6'>
             <div className='flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2'>
               <div className='p-1 md:p-1.5 bg-emerald-500/10 rounded-md'>
                 <TrendingUp className='w-3 h-3 md:w-4 md:h-4 text-emerald-600' />
@@ -190,7 +190,7 @@ function ExpensesPage() {
             <p className='text-base md:text-2xl font-bold text-emerald-700 truncate'>
               {formatCurrency(monthlyTotals.income)}
             </p>
-            <p className='text-[10px] md:text-xs text-emerald-600/70 mt-0.5'>
+            <p className='text-xs text-emerald-600/70 mt-0.5'>
               {t('common.thisMonth')}
             </p>
           </CardContent>
@@ -198,7 +198,7 @@ function ExpensesPage() {
 
         {/* Monthly Expenses Card */}
         <Card className='bg-gradient-to-br from-rose-50 to-rose-100/50 border-rose-200/50'>
-          <CardContent className='p-3 md:p-6'>
+          <CardContent className='p-4 md:p-6'>
             <div className='flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2'>
               <div className='p-1 md:p-1.5 bg-rose-500/10 rounded-md'>
                 <TrendingDown className='w-3 h-3 md:w-4 md:h-4 text-rose-600' />
@@ -210,7 +210,7 @@ function ExpensesPage() {
             <p className='text-base md:text-2xl font-bold text-rose-700 truncate'>
               {formatCurrency(monthlyTotals.outcome)}
             </p>
-            <p className='text-[10px] md:text-xs text-rose-600/70 mt-0.5'>
+            <p className='text-xs text-rose-600/70 mt-0.5'>
               {t('common.thisMonth')}
             </p>
           </CardContent>
@@ -224,7 +224,7 @@ function ExpensesPage() {
               : 'from-amber-50 to-amber-100/50 border-amber-200/50'
           }`}
         >
-          <CardContent className='p-3 md:p-6'>
+          <CardContent className='p-4 md:p-6'>
             <div className='flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2'>
               <div
                 className={`p-1 md:p-1.5 rounded-md ${
@@ -254,7 +254,7 @@ function ExpensesPage() {
               {formatCurrency(Math.abs(monthlyBalance))}
             </p>
             <p
-              className={`text-[10px] md:text-xs mt-0.5 ${
+              className={`text-xs mt-0.5 ${
                 monthlyBalance >= 0 ? 'text-blue-600/70' : 'text-amber-600/70'
               }`}
             >
@@ -313,7 +313,7 @@ function ExpensesPage() {
             className='block'
           >
             <Card className='hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer active:scale-[0.99] touch-manipulation'>
-              <CardContent className='p-3 md:p-4'>
+              <CardContent className='p-4 md:p-4'>
                 <div className='flex items-start gap-3'>
                   {/* Icon */}
                   <div
@@ -340,7 +340,7 @@ function ExpensesPage() {
                             ? 'default'
                             : 'destructive'
                         }
-                        className='text-[10px] md:text-xs px-1.5 py-0 shrink-0'
+                        className='text-xs px-1.5 py-0 shrink-0'
                       >
                         {expense.type}
                       </Badge>
@@ -360,7 +360,7 @@ function ExpensesPage() {
                           />
                         </div>
                       )}
-                      <span className='text-[10px] md:text-xs text-slate-500 shrink-0'>
+                      <span className='text-xs text-slate-500 shrink-0'>
                         {format(parseLocalDate(expense.date), 'MMM dd')}
                       </span>
                     </div>

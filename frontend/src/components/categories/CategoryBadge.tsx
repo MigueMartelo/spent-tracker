@@ -15,13 +15,13 @@ export function CategoryBadge({
   const initial = category.name.charAt(0).toUpperCase();
 
   const sizeClasses = {
-    sm: 'w-5 h-5 text-[10px]',
+    sm: 'w-5 h-5 text-xs',
     md: 'w-6 h-6 text-xs',
     lg: 'w-8 h-8 text-sm',
   }[size];
 
   const nameSizeClasses = {
-    sm: 'text-[10px] max-w-[60px]',
+    sm: 'text-xs max-w-[60px]',
     md: 'text-xs max-w-[80px]',
     lg: 'text-sm max-w-[100px]',
   }[size];
