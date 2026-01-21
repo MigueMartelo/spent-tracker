@@ -1,7 +1,15 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth';
-import { LogOut, Menu, X, Wallet, CreditCard, Tag } from 'lucide-react';
+import {
+  LogOut,
+  Menu,
+  X,
+  Wallet,
+  CreditCard,
+  Tag,
+  PiggyBank,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Footer } from './Footer';
@@ -49,6 +57,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <Button variant='ghost' size='sm' className='gap-2'>
                       <Tag className='w-4 h-4' />
                       {t('categories.title')}
+                    </Button>
+                  </Link>
+                  <Link to='/budget'>
+                    <Button variant='ghost' size='sm' className='gap-2'>
+                      <PiggyBank className='w-4 h-4' />
+                      {t('budget.title')}
                     </Button>
                   </Link>
                   <span className='text-sm text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full'>
@@ -121,6 +135,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     >
                       <Tag className='w-4 h-4' />
                       {t('categories.title')}
+                    </Button>
+                  </Link>
+                  <Link to='/budget' onClick={() => setMobileMenuOpen(false)}>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      className='w-full gap-2 justify-center'
+                    >
+                      <PiggyBank className='w-4 h-4' />
+                      {t('budget.title')}
                     </Button>
                   </Link>
                   <Button
