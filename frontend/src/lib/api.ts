@@ -12,6 +12,10 @@ import type {
   Category,
   CreateCategoryDto,
   UpdateCategoryDto,
+  Budget,
+  BudgetItem,
+  CreateBudgetItemDto,
+  UpdateBudgetItemDto,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -187,6 +191,33 @@ export const categoriesApi = {
   },
   delete: async (id: string): Promise<Category> => {
     return apiRequest<Category>(`/categories/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+// Budget API
+export const budgetApi = {
+  get: async (): Promise<Budget> => {
+    return apiRequest<Budget>('/budget');
+  },
+  createItem: async (data: CreateBudgetItemDto): Promise<BudgetItem> => {
+    return apiRequest<BudgetItem>('/budget/items', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+  updateItem: async (
+    id: string,
+    data: UpdateBudgetItemDto
+  ): Promise<BudgetItem> => {
+    return apiRequest<BudgetItem>(`/budget/items/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+  deleteItem: async (id: string): Promise<BudgetItem> => {
+    return apiRequest<BudgetItem>(`/budget/items/${id}`, {
       method: 'DELETE',
     });
   },

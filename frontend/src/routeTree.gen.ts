@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedExpensesIndexRouteImport } from './routes/_authenticated/expenses/index'
 import { Route as AuthenticatedCreditCardsIndexRouteImport } from './routes/_authenticated/credit-cards/index'
 import { Route as AuthenticatedCategoriesIndexRouteImport } from './routes/_authenticated/categories/index'
+import { Route as AuthenticatedBudgetIndexRouteImport } from './routes/_authenticated/budget/index'
 import { Route as AuthenticatedExpensesNewRouteImport } from './routes/_authenticated/expenses/new'
 import { Route as AuthenticatedExpensesHistoryRouteImport } from './routes/_authenticated/expenses/history'
 import { Route as AuthenticatedExpensesIdRouteImport } from './routes/_authenticated/expenses/$id'
@@ -57,6 +58,12 @@ const AuthenticatedCategoriesIndexRoute =
     path: '/categories/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedBudgetIndexRoute =
+  AuthenticatedBudgetIndexRouteImport.update({
+    id: '/budget/',
+    path: '/budget/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedExpensesNewRoute =
   AuthenticatedExpensesNewRouteImport.update({
     id: '/expenses/new',
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/expenses/$id': typeof AuthenticatedExpensesIdRoute
   '/expenses/history': typeof AuthenticatedExpensesHistoryRoute
   '/expenses/new': typeof AuthenticatedExpensesNewRoute
+  '/budget': typeof AuthenticatedBudgetIndexRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/credit-cards': typeof AuthenticatedCreditCardsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
@@ -93,6 +101,7 @@ export interface FileRoutesByTo {
   '/expenses/$id': typeof AuthenticatedExpensesIdRoute
   '/expenses/history': typeof AuthenticatedExpensesHistoryRoute
   '/expenses/new': typeof AuthenticatedExpensesNewRoute
+  '/budget': typeof AuthenticatedBudgetIndexRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/credit-cards': typeof AuthenticatedCreditCardsIndexRoute
   '/expenses': typeof AuthenticatedExpensesIndexRoute
@@ -106,6 +115,7 @@ export interface FileRoutesById {
   '/_authenticated/expenses/$id': typeof AuthenticatedExpensesIdRoute
   '/_authenticated/expenses/history': typeof AuthenticatedExpensesHistoryRoute
   '/_authenticated/expenses/new': typeof AuthenticatedExpensesNewRoute
+  '/_authenticated/budget/': typeof AuthenticatedBudgetIndexRoute
   '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/credit-cards/': typeof AuthenticatedCreditCardsIndexRoute
   '/_authenticated/expenses/': typeof AuthenticatedExpensesIndexRoute
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/expenses/$id'
     | '/expenses/history'
     | '/expenses/new'
+    | '/budget'
     | '/categories'
     | '/credit-cards'
     | '/expenses'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/expenses/$id'
     | '/expenses/history'
     | '/expenses/new'
+    | '/budget'
     | '/categories'
     | '/credit-cards'
     | '/expenses'
@@ -142,6 +154,7 @@ export interface FileRouteTypes {
     | '/_authenticated/expenses/$id'
     | '/_authenticated/expenses/history'
     | '/_authenticated/expenses/new'
+    | '/_authenticated/budget/'
     | '/_authenticated/categories/'
     | '/_authenticated/credit-cards/'
     | '/_authenticated/expenses/'
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/budget/': {
+      id: '/_authenticated/budget/'
+      path: '/budget'
+      fullPath: '/budget'
+      preLoaderRoute: typeof AuthenticatedBudgetIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/expenses/new': {
       id: '/_authenticated/expenses/new'
       path: '/expenses/new'
@@ -233,6 +253,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedExpensesIdRoute: typeof AuthenticatedExpensesIdRoute
   AuthenticatedExpensesHistoryRoute: typeof AuthenticatedExpensesHistoryRoute
   AuthenticatedExpensesNewRoute: typeof AuthenticatedExpensesNewRoute
+  AuthenticatedBudgetIndexRoute: typeof AuthenticatedBudgetIndexRoute
   AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedCreditCardsIndexRoute: typeof AuthenticatedCreditCardsIndexRoute
   AuthenticatedExpensesIndexRoute: typeof AuthenticatedExpensesIndexRoute
@@ -242,6 +263,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedExpensesIdRoute: AuthenticatedExpensesIdRoute,
   AuthenticatedExpensesHistoryRoute: AuthenticatedExpensesHistoryRoute,
   AuthenticatedExpensesNewRoute: AuthenticatedExpensesNewRoute,
+  AuthenticatedBudgetIndexRoute: AuthenticatedBudgetIndexRoute,
   AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedCreditCardsIndexRoute: AuthenticatedCreditCardsIndexRoute,
   AuthenticatedExpensesIndexRoute: AuthenticatedExpensesIndexRoute,

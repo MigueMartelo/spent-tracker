@@ -31,6 +31,25 @@ export interface Category {
   updatedAt: string;
 }
 
+export interface BudgetItem {
+  id: string;
+  budgetId: string;
+  item: string;
+  amount: number;
+  categoryId: string | null;
+  category: Category | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Budget {
+  id: string;
+  userId: string;
+  items: BudgetItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Expense {
   id: string;
   userId: string;
@@ -84,6 +103,14 @@ export interface CreateCategoryDto {
 }
 
 export interface UpdateCategoryDto extends Partial<CreateCategoryDto> {}
+
+export interface CreateBudgetItemDto {
+  item: string;
+  amount: number;
+  categoryId?: string;
+}
+
+export interface UpdateBudgetItemDto extends Partial<CreateBudgetItemDto> {}
 
 export interface ExpenseFilters {
   type?: ExpenseType;
