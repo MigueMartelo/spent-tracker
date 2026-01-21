@@ -90,6 +90,7 @@
     "allTypes": "All Types",
     "payment": "Payment",
     "allPayments": "All Payments",
+    "allCategories": "All Categories",
     "cashDebit": "Cash / Debit",
     "creditCard": "Credit Card",
     "transactionsFound": "{{count}} transaction found",

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { expensesApi, creditCardsApi } from '@/lib/api';
+import { expensesApi, creditCardsApi, categoriesApi } from '@/lib/api';
 import { formatCurrency, formatCurrencyWithSign } from '@/lib/currency';
 import { ExpenseType, Expense } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
@@ -41,6 +41,7 @@ import {
   Filter,
   X,
   CreditCard as CreditCardIcon,
+  Tag,
 } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 import { useTranslation } from 'react-i18next';
@@ -56,6 +57,7 @@ type QuickFilter =
   | 'last-month'
   | 'custom';
 type CreditCardFilter = 'all' | 'none' | string; // 'none' = cash only, string = specific card ID
+type CategoryFilter = 'all' | 'none' | string; // 'none' = uncategorized, string = specific category ID
 
 function HistoryPage() {
   const { t } = useTranslation();
@@ -70,6 +72,8 @@ function HistoryPage() {
   const [typeFilter, setTypeFilter] = useState<ExpenseType | 'all'>('all');
   const [creditCardFilter, setCreditCardFilter] =
     useState<CreditCardFilter>('all');
+  const [categoryFilter, setCategoryFilter] =
+    useState<CategoryFilter>('all');
 
   // Fetch all expenses
   const { data: expenses, isLoading } = useQuery({
@@ -81,6 +85,12 @@ function HistoryPage() {
   const { data: creditCards = [] } = useQuery({
     queryKey: ['credit-cards'],
     queryFn: creditCardsApi.getAll,
+  });
+
+  // Fetch categories for filter dropdown
+  const { data: categories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: categoriesApi.getAll,
   });
 
   // Helper to parse expense date as LOCAL date (avoiding timezone issues)
@@ -119,7 +129,7 @@ function HistoryPage() {
     setQuickFilter(filter);
   };
 
-  // Filter expenses based on date range, type, and credit card
+  // Filter expenses based on date range, type, credit card, and category
   const filteredExpenses =
     expenses?.filter((expense: Expense) => {
       const expenseDate = parseLocalDate(expense.date);
@@ -156,6 +166,21 @@ function HistoryPage() {
         } else {
           // Show expenses with specific credit card
           if (expense.creditCardId !== creditCardFilter) {
+            return false;
+          }
+        }
+      }
+
+      // Category filter
+      if (categoryFilter !== 'all') {
+        if (categoryFilter === 'none') {
+          // Only show expenses without category
+          if (expense.categoryId !== null) {
+            return false;
+          }
+        } else {
+          // Show expenses with specific category
+          if (expense.categoryId !== categoryFilter) {
             return false;
           }
         }
@@ -371,11 +396,45 @@ function HistoryPage() {
                 ))}
               </SelectContent>
             </Select>
+
+            {/* Category Filter */}
+            <Select
+              value={categoryFilter}
+              onValueChange={(value) => setCategoryFilter(value)}
+            >
+              <SelectTrigger className='w-full sm:w-[170px]'>
+                <Tag className='w-4 h-4 mr-2' />
+                <SelectValue placeholder={t('expenses.category')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='all'>
+                  {t('expenses.allCategories')}
+                </SelectItem>
+                <SelectItem value='none'>{t('expenses.noCategory')}</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    <span className='flex items-center gap-2'>
+                      <div
+                        className='w-5 h-5 rounded flex items-center justify-center text-xs font-bold'
+                        style={{
+                          backgroundColor: category.color,
+                          color: category.textColor || '#FFFFFF',
+                        }}
+                      >
+                        {category.name.charAt(0).toUpperCase()}
+                      </div>
+                      {category.name}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Active Filters Display */}
           {(typeFilter !== 'all' ||
             creditCardFilter !== 'all' ||
+            categoryFilter !== 'all' ||
             quickFilter === 'custom') && (
             <div className='flex flex-wrap gap-2'>
               {typeFilter !== 'all' && (
@@ -398,6 +457,18 @@ function HistoryPage() {
                   <X
                     className='w-3 h-3 cursor-pointer hover:text-red-500'
                     onClick={() => setCreditCardFilter('all')}
+                  />
+                </Badge>
+              )}
+              {categoryFilter !== 'all' && (
+                <Badge variant='secondary' className='gap-1'>
+                  {categoryFilter === 'none'
+                    ? t('expenses.noCategory')
+                    : categories.find((c) => c.id === categoryFilter)?.name ||
+                      t('expenses.category')}
+                  <X
+                    className='w-3 h-3 cursor-pointer hover:text-red-500'
+                    onClick={() => setCategoryFilter('all')}
                   />
                 </Badge>
               )}
