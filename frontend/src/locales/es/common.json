@@ -90,6 +90,7 @@
     "allTypes": "Todos los Tipos",
     "payment": "Pago",
     "allPayments": "Todos los Pagos",
+    "allCategories": "Todas las Categorías",
     "cashDebit": "Efectivo / Débito",
     "creditCard": "Tarjeta de Crédito",
     "transactionsFound": "{{count}} transacción encontrada",
