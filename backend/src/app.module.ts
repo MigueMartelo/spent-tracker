@@ -9,6 +9,7 @@ import { ExpensesModule } from './expenses/expenses.module';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
 import { CategoriesModule } from './categories/categories.module';
 import { BudgetModule } from './budget/budget.module';
+import { EmailModule } from './common/email/email.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BudgetModule } from './budget/budget.module';
       isGlobal: true,
     }),
     PrismaModule,
+    EmailModule,
     AuthModule,
     UsersModule,
     ExpensesModule,

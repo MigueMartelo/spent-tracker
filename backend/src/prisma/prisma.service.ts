@@ -50,4 +50,8 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get budgetItem() {
     return this.client.budgetItem;
   }
+
+  get passwordReset() {
+    return this.client.passwordReset;
+  }
 }

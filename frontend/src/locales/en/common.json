@@ -43,7 +43,22 @@
     "accountCreatedSuccess": "Account created successfully",
     "registerFailed": "Failed to register",
     "signedInAs": "Signed in as",
-    "hi": "Hi"
+    "hi": "Hi",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "resetPasswordSubtitle": "Enter your new password below",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordResetSuccess": "Password reset successfully",
+    "passwordResetFailed": "Failed to reset password",
+    "invalidOrExpiredToken": "Invalid or expired reset link",
+    "requestNewReset": "Request new reset link",
+    "enterEmailForReset": "Enter your email address and we'll send you a link to reset your password",
+    "sendResetLink": "Send Reset Link",
+    "sendingResetLink": "Sending...",
+    "resetLinkSent": "If an account exists with that email, you will receive a reset link shortly",
+    "backToLogin": "Back to login"
   },
   "expenses": {
     "dashboard": "Dashboard",
