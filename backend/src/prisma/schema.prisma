@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id           String       @id @default(uuid())
-  email        String       @unique
-  passwordHash String       @map("password_hash")
-  name         String?
-  createdAt    DateTime     @default(now()) @map("created_at")
-  updatedAt    DateTime     @updatedAt @map("updated_at")
-  expenses     Expense[]
-  creditCards  CreditCard[]
-  categories   Category[]
-  budget       Budget?
+  id             String          @id @default(uuid())
+  email          String          @unique
+  passwordHash   String          @map("password_hash")
+  name           String?
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  expenses       Expense[]
+  creditCards    CreditCard[]
+  categories     Category[]
+  budget         Budget?
+  passwordResets PasswordReset[]
 
   @@map("users")
 }
@@ -105,4 +106,18 @@ model BudgetItem {
 enum ExpenseType {
   income
   outcome
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String   @unique // hashed token
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("password_resets")
 }
