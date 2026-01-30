@@ -109,6 +109,25 @@ export const authApi = {
   getMe: async (): Promise<{ id: string; email: string; name: string | null }> => {
     return apiRequest<{ id: string; email: string; name: string | null }>('/auth/me');
   },
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
+    return apiRequest<{ message: string }>('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      skipAuthRedirect: true,
+    });
+  },
+  verifyResetToken: async (token: string): Promise<{ valid: boolean }> => {
+    return apiRequest<{ valid: boolean }>(`/auth/verify-reset-token/${token}`, {
+      skipAuthRedirect: true,
+    });
+  },
+  resetPassword: async (token: string, password: string): Promise<{ message: string }> => {
+    return apiRequest<{ message: string }>('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, password }),
+      skipAuthRedirect: true,
+    });
+  },
 };
 
 // Expenses API

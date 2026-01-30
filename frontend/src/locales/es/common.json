@@ -43,7 +43,22 @@
     "accountCreatedSuccess": "Cuenta creada exitosamente",
     "registerFailed": "Error al registrar",
     "signedInAs": "Conectado como",
-    "hi": "Hola"
+    "hi": "Hola",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer Contraseña",
+    "resetPasswordSubtitle": "Ingresa tu nueva contraseña a continuación",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "passwordsDoNotMatch": "Las contraseñas no coinciden",
+    "passwordResetSuccess": "Contraseña restablecida exitosamente",
+    "passwordResetFailed": "Error al restablecer la contraseña",
+    "invalidOrExpiredToken": "Enlace de restablecimiento inválido o expirado",
+    "requestNewReset": "Solicitar nuevo enlace",
+    "enterEmailForReset": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña",
+    "sendResetLink": "Enviar Enlace",
+    "sendingResetLink": "Enviando...",
+    "resetLinkSent": "Si existe una cuenta con ese correo, recibirás un enlace de restablecimiento en breve",
+    "backToLogin": "Volver a iniciar sesión"
   },
   "expenses": {
     "dashboard": "Panel de control",
