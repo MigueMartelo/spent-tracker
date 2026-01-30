@@ -84,4 +84,16 @@ export class UsersService {
       throw new InternalServerErrorException('Failed to create user');
     }
   }
+
+  async updatePassword(userId: string, newPasswordHash: string): Promise<void> {
+    try {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { passwordHash: newPasswordHash },
+      });
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to update password');
+    }
+  }
 }
