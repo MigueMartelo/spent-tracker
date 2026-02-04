@@ -219,6 +219,38 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "landing": {
+    "heroTitle": "Take control of your finances",
+    "heroSubtitle": "Track your expenses, manage budgets, and gain insights into your spending habits with our simple and intuitive expense tracker.",
+    "getStarted": "Get started",
+    "featuresTitle": "Everything you need to manage your money",
+    "feature1Title": "Track Expenses",
+    "feature1Description": "Log your daily expenses quickly and easily with categories and notes.",
+    "feature2Title": "Budget Planning",
+    "feature2Description": "Set monthly budgets and track your progress to stay on target.",
+    "feature3Title": "Transaction History",
+    "feature3Description": "View and filter your complete transaction history anytime."
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "Choose the plan that works for you. No hidden fees.",
+    "free": "Free",
+    "freeDescription": "Perfect for getting started",
+    "freeLimit": "5 records per day",
+    "freeFeature1": "Basic expense tracking",
+    "freeFeature2": "Category management",
+    "getStartedFree": "Get started for free",
+    "pro": "Pro",
+    "proDescription": "For power users who need more",
+    "unlimited": "Unlimited records",
+    "proFeature1": "All Free features",
+    "proFeature2": "Priority support",
+    "proFeature3": "Advanced reports",
+    "choosePro": "Choose Pro",
+    "month": "month",
+    "yearlyOption": "or $50/year (save $10)",
+    "bestValue": "Best value"
   }
 }
 

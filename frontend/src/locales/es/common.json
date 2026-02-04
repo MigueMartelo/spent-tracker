@@ -219,6 +219,38 @@
     "light": "Claro",
     "dark": "Oscuro",
     "system": "Sistema"
+  },
+  "landing": {
+    "heroTitle": "Toma el control de tus finanzas",
+    "heroSubtitle": "Rastrea tus gastos, administra presupuestos y obtén información sobre tus hábitos de gasto con nuestro rastreador de gastos simple e intuitivo.",
+    "getStarted": "Comenzar",
+    "featuresTitle": "Todo lo que necesitas para manejar tu dinero",
+    "feature1Title": "Rastrea Gastos",
+    "feature1Description": "Registra tus gastos diarios de forma rápida y fácil con categorías y notas.",
+    "feature2Title": "Planificación de Presupuesto",
+    "feature2Description": "Establece presupuestos mensuales y sigue tu progreso para mantenerte en objetivo.",
+    "feature3Title": "Historial de Transacciones",
+    "feature3Description": "Ve y filtra tu historial completo de transacciones en cualquier momento."
+  },
+  "pricing": {
+    "title": "Precios simples y transparentes",
+    "subtitle": "Elige el plan que mejor te funcione. Sin cargos ocultos.",
+    "free": "Gratis",
+    "freeDescription": "Perfecto para comenzar",
+    "freeLimit": "5 registros por día",
+    "freeFeature1": "Seguimiento básico de gastos",
+    "freeFeature2": "Gestión de categorías",
+    "getStartedFree": "Comienza gratis",
+    "pro": "Pro",
+    "proDescription": "Para usuarios avanzados que necesitan más",
+    "unlimited": "Registros ilimitados",
+    "proFeature1": "Todas las funciones Gratis",
+    "proFeature2": "Soporte prioritario",
+    "proFeature3": "Reportes avanzados",
+    "choosePro": "Elegir Pro",
+    "month": "mes",
+    "yearlyOption": "o $50/año (ahorra $10)",
+    "bestValue": "Mejor valor"
   }
 }
 
