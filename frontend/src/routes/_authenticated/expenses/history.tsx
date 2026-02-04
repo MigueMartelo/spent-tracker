@@ -262,13 +262,13 @@ function HistoryPage() {
             <ArrowLeft className='w-5 h-5' />
           </Button>
         </Link>
-        <h1 className='text-xl md:text-2xl font-bold text-slate-800'>
+        <h1 className='text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-100'>
           {t('expenses.transactionHistory')}
         </h1>
       </div>
 
       {/* Filters Section */}
-      <Card className='bg-slate-50/50'>
+      <Card className='bg-slate-50/50 dark:bg-slate-800/50'>
         <CardContent className='p-4 md:p-4 space-y-3'>
           {/* Quick Filters */}
           <div className='flex gap-2 overflow-x-auto pb-1 -mx-3 px-3 md:mx-0 md:px-0 scrollbar-hide'>
@@ -480,30 +480,30 @@ function HistoryPage() {
       {/* Summary Cards for Filtered Period */}
       <div className='grid grid-cols-3 gap-3 md:gap-4'>
         {/* Income Card */}
-        <Card className='bg-emerald-50/50 border-emerald-200/50'>
+        <Card className='bg-emerald-50/50 dark:bg-emerald-900/20 border-emerald-200/50 dark:border-emerald-800/50'>
           <CardContent className='p-4 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
-              <TrendingUp className='w-3 h-3 text-emerald-600' />
-              <span className='text-xs font-medium text-emerald-700'>
+              <TrendingUp className='w-3 h-3 text-emerald-600 dark:text-emerald-500' />
+              <span className='text-xs font-medium text-emerald-700 dark:text-emerald-400'>
                 {t('expenses.income')}
               </span>
             </div>
-            <p className='text-sm md:text-lg font-bold text-emerald-700 truncate'>
+            <p className='text-sm md:text-lg font-bold text-emerald-700 dark:text-emerald-400 truncate'>
               {formatCurrency(totals.income)}
             </p>
           </CardContent>
         </Card>
 
         {/* Outcome Card */}
-        <Card className='bg-rose-50/50 border-rose-200/50'>
+        <Card className='bg-rose-50/50 dark:bg-rose-900/20 border-rose-200/50 dark:border-rose-800/50'>
           <CardContent className='p-4 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
-              <TrendingDown className='w-3 h-3 text-rose-600' />
-              <span className='text-xs font-medium text-rose-700'>
+              <TrendingDown className='w-3 h-3 text-rose-600 dark:text-rose-500' />
+              <span className='text-xs font-medium text-rose-700 dark:text-rose-400'>
                 {t('expenses.expenses')}
               </span>
             </div>
-            <p className='text-sm md:text-lg font-bold text-rose-700 truncate'>
+            <p className='text-sm md:text-lg font-bold text-rose-700 dark:text-rose-400 truncate'>
               {formatCurrency(totals.outcome)}
             </p>
           </CardContent>
@@ -511,21 +511,21 @@ function HistoryPage() {
 
         {/* Balance Card */}
         <Card
-          className={`${balance >= 0 ? 'bg-blue-50/50 border-blue-200/50' : 'bg-amber-50/50 border-amber-200/50'}`}
+          className={`${balance >= 0 ? 'bg-blue-50/50 dark:bg-blue-900/20 border-blue-200/50 dark:border-blue-800/50' : 'bg-amber-50/50 dark:bg-amber-900/20 border-amber-200/50 dark:border-amber-800/50'}`}
         >
           <CardContent className='p-4 md:p-4'>
             <div className='flex items-center gap-1.5 mb-1'>
               <Wallet
-                className={`w-3 h-3 ${balance >= 0 ? 'text-blue-600' : 'text-amber-600'}`}
+                className={`w-3 h-3 ${balance >= 0 ? 'text-blue-600 dark:text-blue-500' : 'text-amber-600 dark:text-amber-500'}`}
               />
               <span
-                className={`text-xs font-medium ${balance >= 0 ? 'text-blue-700' : 'text-amber-700'}`}
+                className={`text-xs font-medium ${balance >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-amber-700 dark:text-amber-400'}`}
               >
                 {t('expenses.balance')}
               </span>
             </div>
             <p
-              className={`text-sm md:text-lg font-bold truncate ${balance >= 0 ? 'text-blue-700' : 'text-amber-700'}`}
+              className={`text-sm md:text-lg font-bold truncate ${balance >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-amber-700 dark:text-amber-400'}`}
             >
               {balance >= 0 ? '' : '-'}
               {formatCurrency(Math.abs(balance))}
@@ -536,7 +536,7 @@ function HistoryPage() {
 
       {/* Results Count */}
       <div className='flex items-center justify-between'>
-        <p className='text-sm text-slate-500'>
+        <p className='text-sm text-slate-500 dark:text-slate-400'>
           {t('expenses.transactionsFound', { count: filteredExpenses.length })}
         </p>
       </div>
@@ -545,7 +545,7 @@ function HistoryPage() {
       <div className='space-y-4'>
         {Object.entries(groupedExpenses).map(([dateKey, dayExpenses]) => (
           <div key={dateKey} className='space-y-2'>
-            <h3 className='text-xs font-semibold text-slate-500 uppercase tracking-wider sticky top-14 md:top-16 z-10 bg-slate-100/80 backdrop-blur-sm py-1 px-1 -mx-1 rounded'>
+            <h3 className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider sticky top-14 md:top-16 z-10 bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm py-1 px-1 -mx-1 rounded'>
               {format(
                 parseLocalDate(dateKey + 'T00:00:00'),
                 'EEEE, MMMM d, yyyy'
@@ -559,15 +559,15 @@ function HistoryPage() {
                 params={{ id: expense.id }}
                 className='block'
               >
-                <Card className='hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer active:scale-[0.99] touch-manipulation'>
+                <Card className='hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-colors cursor-pointer active:scale-[0.99] touch-manipulation'>
                   <CardContent className='p-4 md:p-4'>
                     <div className='flex items-start gap-3'>
                       {/* Icon */}
                       <div
                         className={`p-2 md:p-2.5 rounded-xl shrink-0 ${
                           expense.type === ExpenseType.INCOME
-                            ? 'bg-emerald-100 text-emerald-600'
-                            : 'bg-rose-100 text-rose-600'
+                            ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-500'
+                            : 'bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-500'
                         }`}
                       >
                         {expense.type === ExpenseType.INCOME ? (
@@ -607,14 +607,14 @@ function HistoryPage() {
                               />
                             </div>
                           )}
-                          <span className='text-xs text-slate-500 shrink-0'>
+                          <span className='text-xs text-slate-500 dark:text-slate-400 shrink-0'>
                             {format(parseLocalDate(expense.date), 'MMM dd')}
                           </span>
                         </div>
 
                         {/* Description - Mobile: Full width with amount, Desktop: Left */}
                         <div className='flex items-start justify-between gap-2'>
-                          <p className='text-sm md:text-sm font-medium text-slate-800 flex-1 min-w-0'>
+                          <p className='text-sm md:text-sm font-medium text-slate-800 dark:text-slate-200 flex-1 min-w-0'>
                             {expense.description}
                           </p>
                           {/* Amount - Mobile: Right side, Desktop: Hidden (shown in right column) */}
@@ -622,8 +622,8 @@ function HistoryPage() {
                             <p
                               className={`text-base font-semibold ${
                                 expense.type === ExpenseType.INCOME
-                                  ? 'text-emerald-600'
-                                  : 'text-rose-600'
+                                  ? 'text-emerald-600 dark:text-emerald-500'
+                                  : 'text-rose-600 dark:text-rose-500'
                               }`}
                             >
                               {formatCurrencyWithSign(
@@ -642,8 +642,8 @@ function HistoryPage() {
                         <p
                           className={`text-lg font-semibold ${
                             expense.type === ExpenseType.INCOME
-                              ? 'text-emerald-600'
-                              : 'text-rose-600'
+                              ? 'text-emerald-600 dark:text-emerald-500'
+                              : 'text-rose-600 dark:text-rose-500'
                           }`}
                         >
                           {formatCurrencyWithSign(
@@ -653,7 +653,7 @@ function HistoryPage() {
                               : 'outcome'
                           )}
                         </p>
-                        <ChevronRight className='w-4 h-4 text-slate-400' />
+                        <ChevronRight className='w-4 h-4 text-slate-400 dark:text-slate-500' />
                       </div>
                     </div>
                   </CardContent>
@@ -665,15 +665,15 @@ function HistoryPage() {
 
         {/* Empty State */}
         {filteredExpenses.length === 0 && (
-          <Card className='border-dashed bg-slate-50/50'>
+          <Card className='border-dashed bg-slate-50/50 dark:bg-slate-800/50'>
             <CardContent className='p-6 md:p-8 text-center'>
-              <div className='w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3'>
-                <CalendarIcon className='w-6 h-6 text-slate-400' />
+              <div className='w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3'>
+                <CalendarIcon className='w-6 h-6 text-slate-400 dark:text-slate-500' />
               </div>
-              <p className='text-slate-500 text-sm mb-1'>
+              <p className='text-slate-500 dark:text-slate-400 text-sm mb-1'>
                 {t('expenses.noTransactionsFound')}
               </p>
-              <p className='text-slate-400 text-xs'>
+              <p className='text-slate-400 dark:text-slate-500 text-xs'>
                 {t('expenses.tryAdjustingFilters')}
               </p>
             </CardContent>

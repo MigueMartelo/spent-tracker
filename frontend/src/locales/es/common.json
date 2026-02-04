@@ -214,6 +214,11 @@
   "footer": {
     "copyright": "© {{year}} Rastreador de Gastos",
     "madeWith": "Hecho con ❤️ por"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
   }
 }
 

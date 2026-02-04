@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import appCss from '../styles.css?url';
 import { AuthProvider } from '@/lib/auth';
+import { ThemeProvider } from '@/lib/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import '@/lib/i18n';
 
@@ -58,28 +59,35 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   }, [i18n.language]);
 
   return (
-    <html lang={i18n.language}>
+    <html lang={i18n.language} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body suppressHydrationWarning>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            {children}
-            <TanStackDevtools
-              config={{
-                position: 'bottom-right',
-              }}
-              plugins={[
-                {
-                  name: 'Tanstack Router',
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-              ]}
-            />
-          </AuthProvider>
-          <Toaster />
-          <Scripts />
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AuthProvider>
+              {children}
+              <TanStackDevtools
+                config={{
+                  position: 'bottom-right',
+                }}
+                plugins={[
+                  {
+                    name: 'Tanstack Router',
+                    render: <TanStackRouterDevtoolsPanel />,
+                  },
+                ]}
+              />
+            </AuthProvider>
+            <Toaster />
+            <Scripts />
+          </ThemeProvider>
         </QueryClientProvider>
       </body>
     </html>

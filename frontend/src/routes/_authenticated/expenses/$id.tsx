@@ -75,10 +75,10 @@ function EditExpensePage() {
       <div className='container mx-auto px-4 py-4 md:py-6 max-w-lg'>
         <Card className='shadow-lg'>
           <CardContent className='p-8 text-center'>
-            <div className='w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4'>
+            <div className='w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4'>
               <span className='text-2xl'>🔍</span>
             </div>
-            <p className='text-slate-500 mb-4'>{t('expenses.transactionNotFound')}</p>
+            <p className='text-slate-500 dark:text-slate-400 mb-4'>{t('expenses.transactionNotFound')}</p>
             <Button onClick={() => navigate({ to: '/expenses' })}>
               {t('expenses.backToDashboard')}
             </Button>
@@ -95,13 +95,13 @@ function EditExpensePage() {
   return (
     <div className='container mx-auto px-4 py-4 md:py-6 max-w-lg space-y-4'>
       {/* Back Button */}
-      <Link to='/expenses' className='inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 min-h-[44px]'>
+      <Link to='/expenses' className='inline-flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 min-h-[44px]'>
         <ArrowLeft className='w-4 h-4' />
         {t('expenses.backToDashboard')}
       </Link>
 
       {/* Edit Form */}
-      <Card className='shadow-lg border-slate-200/50'>
+      <Card className='shadow-lg'>
         <CardHeader className='pb-4'>
           <CardTitle className='text-xl md:text-2xl'>{t('expenses.updateTransaction')}</CardTitle>
         </CardHeader>
@@ -115,12 +115,12 @@ function EditExpensePage() {
       </Card>
 
       {/* Delete Section */}
-      <Card className='border-rose-200/50 bg-rose-50/30'>
+      <Card className='border-rose-200/50 dark:border-rose-800/50 bg-rose-50/30 dark:bg-rose-900/20'>
         <CardContent className='p-4'>
           <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3'>
             <div>
-              <p className='font-medium text-rose-900'>{t('expenses.deleteTransaction')}</p>
-              <p className='text-sm text-rose-700/70'>
+              <p className='font-medium text-rose-900 dark:text-rose-400'>{t('expenses.deleteTransaction')}</p>
+              <p className='text-sm text-rose-700/70 dark:text-rose-500/70'>
                 {t('expenses.deleteTransactionConfirm').split('.')[1]?.trim() || t('expenses.deleteTransactionConfirm')}
               </p>
             </div>

@@ -132,7 +132,7 @@ export function CreditCardForm({
       {/* Preview */}
       <div className='space-y-2'>
         <Label>{t('creditCards.preview')}</Label>
-        <div className='flex items-center gap-3 p-4 bg-slate-50 rounded-lg border'>
+        <div className='flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700'>
           <div
             className='w-12 h-12 rounded-xl shadow-sm flex items-center justify-center font-bold text-xl shrink-0'
             style={{ 
@@ -143,10 +143,10 @@ export function CreditCardForm({
             {watch('name')?.charAt(0)?.toUpperCase() || 'C'}
           </div>
           <div className='flex-1 min-w-0'>
-            <p className='text-sm font-medium text-slate-700 truncate'>
+            <p className='text-sm font-medium text-slate-700 dark:text-slate-200 truncate'>
               {watch('name') || t('creditCards.cardPreview')}
             </p>
-            <p className='text-xs text-slate-500'>
+            <p className='text-xs text-slate-500 dark:text-slate-400'>
               Background: {selectedColor} · Text: {selectedTextColor}
             </p>
           </div>
@@ -166,7 +166,7 @@ export function CreditCardForm({
               onClick={() => setValue('color', color)}
               className={`w-7 h-7 rounded-md transition-all ${
                 selectedColor === color
-                  ? 'ring-2 ring-offset-2 ring-slate-900 scale-110'
+                  ? 'ring-2 ring-offset-2 ring-slate-900 dark:ring-slate-100 scale-110'
                   : 'hover:scale-105'
               }`}
               style={{ backgroundColor: color }}
@@ -182,7 +182,7 @@ export function CreditCardForm({
         <button
           type='button'
           onClick={() => setShowCustomColor(!showCustomColor)}
-          className='flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors'
+          className='flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors'
         >
           <Palette className='w-4 h-4' />
           {showCustomColor ? t('creditCards.hideCustomColor') : t('creditCards.useCustomColor')}
@@ -201,7 +201,7 @@ export function CreditCardForm({
               type='color'
               value={selectedColor}
               onChange={(e) => setValue('color', e.target.value.toUpperCase())}
-              className='w-11 h-11 rounded-md cursor-pointer border border-slate-200'
+              className='w-11 h-11 rounded-md cursor-pointer border border-slate-200 dark:border-slate-700'
             />
           </div>
         )}
@@ -224,8 +224,8 @@ export function CreditCardForm({
               onClick={() => setValue('textColor', tc.value)}
               className={`px-3 py-2 rounded-lg border transition-all flex items-center gap-2 ${
                 selectedTextColor === tc.value
-                  ? 'ring-2 ring-slate-900 border-slate-900'
-                  : 'border-slate-200 hover:border-slate-400'
+                  ? 'ring-2 ring-slate-900 dark:ring-slate-100 border-slate-900 dark:border-slate-100'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500'
               }`}
             >
               <div
@@ -237,7 +237,7 @@ export function CreditCardForm({
               >
                 A
               </div>
-              <span className='text-xs text-slate-600'>{tc.label}</span>
+              <span className='text-xs text-slate-600 dark:text-slate-400'>{tc.label}</span>
             </button>
           ))}
         </div>
@@ -246,7 +246,7 @@ export function CreditCardForm({
         <button
           type='button'
           onClick={() => setShowCustomTextColor(!showCustomTextColor)}
-          className='flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors'
+          className='flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors'
         >
           <Type className='w-4 h-4' />
           {showCustomTextColor ? t('creditCards.hideCustomTextColor') : t('creditCards.useCustomTextColor')}

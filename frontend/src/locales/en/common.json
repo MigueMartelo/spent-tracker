@@ -214,6 +214,11 @@
   "footer": {
     "copyright": "© {{year}} Expense Tracker",
     "madeWith": "With ❤️ by"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }
 

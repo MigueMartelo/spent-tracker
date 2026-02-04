@@ -39,7 +39,7 @@ export function CreditCardBadge({
         {initial}
       </div>
       {showName && (
-        <span className={`${nameSizeClasses} text-slate-600 truncate`}>
+        <span className={`${nameSizeClasses} text-slate-600 dark:text-slate-300 truncate`}>
           {creditCard.name}
         </span>
       )}

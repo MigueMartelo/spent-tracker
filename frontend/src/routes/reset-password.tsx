@@ -17,6 +17,8 @@ import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
 import { Wallet, Lock, ArrowLeft, AlertCircle, Loader2 } from 'lucide-react';
 import { Footer } from '@/components/layout/Footer';
+import { ThemeSwitcher } from '@/components/layout/ThemeSwitcher';
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 
 const createResetPasswordSchema = (t: (key: string) => string) =>
@@ -87,18 +89,24 @@ function ResetPasswordPage() {
   const showError = !token || verificationError || (!isVerifying && !isTokenValid);
 
   return (
-    <div className='min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100'>
+    <div className='min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800'>
       {/* Header */}
       <div className='p-4 md:p-6'>
-        <div className='flex items-center gap-2 text-slate-800'>
-          <Wallet className='w-6 h-6 text-emerald-600' />
-          <span className='font-bold text-lg'>{t('app.name')}</span>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center gap-2 text-slate-800 dark:text-slate-100'>
+            <Wallet className='w-6 h-6 text-emerald-600 dark:text-emerald-500' />
+            <span className='font-bold text-lg'>{t('app.name')}</span>
+          </div>
+          <div className='flex items-center gap-4'>
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className='flex-1 flex items-center justify-center p-4'>
-        <Card className='w-full max-w-md shadow-lg border-slate-200/50'>
+        <Card className='w-full max-w-md shadow-lg'>
           <CardHeader className='space-y-1 pb-4'>
             <CardTitle className='text-2xl font-bold text-center'>
               {t('auth.resetPassword')}
@@ -112,16 +120,16 @@ function ResetPasswordPage() {
           <CardContent>
             {isVerifying ? (
               <div className='flex flex-col items-center gap-4 py-8'>
-                <Loader2 className='w-8 h-8 text-emerald-600 animate-spin' />
-                <p className='text-slate-600'>{t('common.loading')}</p>
+                <Loader2 className='w-8 h-8 text-emerald-600 dark:text-emerald-500 animate-spin' />
+                <p className='text-slate-600 dark:text-slate-400'>{t('common.loading')}</p>
               </div>
             ) : showError ? (
               <div className='space-y-6'>
                 <div className='flex flex-col items-center gap-4 py-4'>
-                  <div className='w-16 h-16 bg-red-100 rounded-full flex items-center justify-center'>
-                    <AlertCircle className='w-8 h-8 text-red-600' />
+                  <div className='w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center'>
+                    <AlertCircle className='w-8 h-8 text-red-600 dark:text-red-500' />
                   </div>
-                  <p className='text-center text-slate-600'>
+                  <p className='text-center text-slate-600 dark:text-slate-400'>
                     {t('auth.invalidOrExpiredToken')}
                   </p>
                 </div>
@@ -133,7 +141,7 @@ function ResetPasswordPage() {
                   </Link>
                   <Link
                     to='/login'
-                    className='flex items-center justify-center gap-2 text-sm text-slate-600 hover:text-emerald-600'
+                    className='flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-500'
                   >
                     <ArrowLeft className='w-4 h-4' />
                     {t('auth.backToLogin')}
@@ -145,7 +153,7 @@ function ResetPasswordPage() {
                 <div className='space-y-2'>
                   <Label htmlFor='password'>{t('auth.newPassword')}</Label>
                   <div className='relative'>
-                    <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
+                    <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500' />
                     <Input
                       id='password'
                       type='password'
@@ -162,7 +170,7 @@ function ResetPasswordPage() {
                 <div className='space-y-2'>
                   <Label htmlFor='confirmPassword'>{t('auth.confirmPassword')}</Label>
                   <div className='relative'>
-                    <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
+                    <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500' />
                     <Input
                       id='confirmPassword'
                       type='password'
@@ -189,7 +197,7 @@ function ResetPasswordPage() {
                 <div className='pt-2'>
                   <Link
                     to='/login'
-                    className='flex items-center justify-center gap-2 text-sm text-slate-600 hover:text-emerald-600'
+                    className='flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-500'
                   >
                     <ArrowLeft className='w-4 h-4' />
                     {t('auth.backToLogin')}

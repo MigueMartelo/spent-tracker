@@ -139,7 +139,7 @@ export function CategoryForm({
       {/* Preview */}
       <div className='space-y-2'>
         <Label>{t('categories.preview')}</Label>
-        <div className='flex items-center gap-3 p-4 bg-slate-50 rounded-lg border border-slate-200'>
+        <div className='flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700'>
           <div
             className='w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shadow-sm shrink-0'
             style={{
@@ -154,10 +154,10 @@ export function CategoryForm({
             )}
           </div>
           <div className='flex-1 min-w-0'>
-            <p className='font-semibold text-slate-800 truncate'>
+            <p className='font-semibold text-slate-800 dark:text-slate-200 truncate'>
               {watch('name') || t('categories.categoryName')}
             </p>
-            <p className='text-xs text-slate-500 font-mono'>
+            <p className='text-xs text-slate-500 dark:text-slate-400 font-mono'>
               BG: {selectedColor} · Text: {selectedTextColor || '#FFFFFF'}
             </p>
           </div>
@@ -177,7 +177,7 @@ export function CategoryForm({
               onClick={() => setValue('color', color)}
               className={`w-7 h-7 rounded-md transition-all ${
                 selectedColor === color
-                  ? 'ring-2 ring-offset-2 ring-slate-900 scale-110'
+                  ? 'ring-2 ring-offset-2 ring-slate-900 dark:ring-slate-100 scale-110'
                   : 'hover:scale-105'
               }`}
               style={{ backgroundColor: color }}
@@ -193,7 +193,7 @@ export function CategoryForm({
         <button
           type='button'
           onClick={() => setShowCustomColor(!showCustomColor)}
-          className='flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors'
+          className='flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors'
         >
           <Palette className='w-4 h-4' />
           {showCustomColor
@@ -214,7 +214,7 @@ export function CategoryForm({
               type='color'
               value={selectedColor}
               onChange={(e) => setValue('color', e.target.value.toUpperCase())}
-              className='w-11 h-11 rounded-md cursor-pointer border border-slate-200'
+              className='w-11 h-11 rounded-md cursor-pointer border border-slate-200 dark:border-slate-700'
             />
           </div>
         )}
@@ -237,8 +237,8 @@ export function CategoryForm({
               onClick={() => setValue('textColor', textColor.value)}
               className={`flex items-center gap-2 p-2 rounded-md border transition-all ${
                 selectedTextColor === textColor.value
-                  ? 'border-slate-900 bg-slate-50'
-                  : 'border-slate-200 hover:border-slate-300'
+                  ? 'border-slate-900 dark:border-slate-100 bg-slate-50 dark:bg-slate-800'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
               }`}
             >
               <div
@@ -250,7 +250,7 @@ export function CategoryForm({
               >
                 A
               </div>
-              <span className='text-xs text-slate-600'>{textColor.label}</span>
+              <span className='text-xs text-slate-600 dark:text-slate-400'>{textColor.label}</span>
             </button>
           ))}
         </div>
@@ -259,7 +259,7 @@ export function CategoryForm({
         <button
           type='button'
           onClick={() => setShowCustomTextColor(!showCustomTextColor)}
-          className='flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors'
+          className='flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors'
         >
           <Palette className='w-4 h-4' />
           {showCustomTextColor
