@@ -9,7 +9,16 @@ import {
 } from '@/components/ui/select';
 import { Globe } from 'lucide-react';
 
-export function LanguageSwitcher() {
+const languages = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+];
+
+interface LanguageSwitcherProps {
+  compact?: boolean;
+}
+
+export function LanguageSwitcher({ compact = false }: LanguageSwitcherProps) {
   const { i18n } = useTranslation();
 
   const changeLanguage = (lang: string) => {
@@ -17,19 +26,39 @@ export function LanguageSwitcher() {
     localStorage.setItem('language', lang);
   };
 
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-  ];
+  const currentLang = languages.find((lang) => lang.code === i18n.language);
 
+  // Compact mode: toggle between languages with flag button
+  if (compact) {
+    const toggleLanguage = () => {
+      const currentIndex = languages.findIndex(
+        (lang) => lang.code === i18n.language
+      );
+      const nextIndex = (currentIndex + 1) % languages.length;
+      changeLanguage(languages[nextIndex].code);
+    };
+
+    return (
+      <Button
+        variant='ghost'
+        size='icon'
+        className='h-8 w-8 text-base'
+        onClick={toggleLanguage}
+        title={currentLang?.name}
+      >
+        {currentLang?.flag || '🌐'}
+      </Button>
+    );
+  }
+
+  // Full mode: dropdown select
   return (
     <div className='flex items-center gap-2'>
       <Globe className='w-4 h-4 text-slate-500' />
       <Select value={i18n.language} onValueChange={changeLanguage}>
         <SelectTrigger className='w-[140px] h-8'>
           <SelectValue>
-            {languages.find((lang) => lang.code === i18n.language)?.flag}{' '}
-            {languages.find((lang) => lang.code === i18n.language)?.name}
+            {currentLang?.flag} {currentLang?.name}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>

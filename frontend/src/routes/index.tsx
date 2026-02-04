@@ -33,12 +33,28 @@ function LandingPage() {
       <header className='p-4 md:p-6'>
         <div className='max-w-6xl mx-auto flex items-center justify-between'>
           <div className='flex items-center gap-2 text-slate-800 dark:text-slate-100'>
-            <Wallet className='w-6 h-6 text-emerald-600 dark:text-emerald-500' />
-            <span className='font-bold text-lg'>{t('app.name')}</span>
+            <Wallet className='w-6 h-6 text-emerald-600 dark:text-emerald-500 flex-shrink-0' />
+            <span className='font-bold text-lg hidden sm:inline'>
+              {t('app.name')}
+            </span>
+            <span className='font-bold text-lg sm:hidden'>
+              {t('app.nameShort')}
+            </span>
           </div>
-          <div className='flex items-center gap-4'>
-            <ThemeSwitcher />
-            <LanguageSwitcher />
+          <div className='flex items-center gap-1 sm:gap-4'>
+            {/* Compact switchers on mobile, full on desktop */}
+            <div className='hidden sm:block'>
+              <ThemeSwitcher />
+            </div>
+            <div className='sm:hidden'>
+              <ThemeSwitcher compact />
+            </div>
+            <div className='hidden sm:block'>
+              <LanguageSwitcher />
+            </div>
+            <div className='sm:hidden'>
+              <LanguageSwitcher compact />
+            </div>
             <Link to='/login'>
               <Button variant='ghost' size='sm'>
                 {t('auth.login')}
