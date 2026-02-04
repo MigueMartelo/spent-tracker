@@ -90,7 +90,7 @@ function CreditCardsPage() {
               <ArrowLeft className='w-5 h-5' />
             </Button>
           </Link>
-          <h1 className='text-xl md:text-2xl font-bold text-slate-800'>
+          <h1 className='text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-100'>
             {t('creditCards.title')}
           </h1>
         </div>
@@ -105,7 +105,7 @@ function CreditCardsPage() {
       </div>
 
       {/* Description */}
-      <p className='text-sm text-slate-500'>
+      <p className='text-sm text-slate-500 dark:text-slate-400'>
         {t('creditCards.manageCards')}
       </p>
 
@@ -114,7 +114,7 @@ function CreditCardsPage() {
         {creditCards?.map((card) => (
           <Card
             key={card.id}
-            className='hover:border-slate-300 transition-colors'
+            className='hover:border-slate-300 dark:hover:border-slate-600 transition-colors'
           >
             <CardContent className='p-4'>
               <div className='flex items-center gap-4'>
@@ -131,10 +131,10 @@ function CreditCardsPage() {
 
                 {/* Card Info */}
                 <div className='flex-1 min-w-0'>
-                  <p className='font-semibold text-slate-800 truncate'>
+                  <p className='font-semibold text-slate-800 dark:text-slate-200 truncate'>
                     {card.name}
                   </p>
-                  <p className='text-xs text-slate-500 font-mono'>
+                  <p className='text-xs text-slate-500 dark:text-slate-400 font-mono'>
                     BG: {card.color} · Text: {card.textColor || '#FFFFFF'}
                   </p>
                 </div>
@@ -145,7 +145,7 @@ function CreditCardsPage() {
                     variant='ghost'
                     size='icon'
                     onClick={() => handleEdit(card)}
-                    className='text-slate-500 hover:text-slate-700 h-11 w-11 sm:h-9 sm:w-9'
+                    className='text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 h-11 w-11 sm:h-9 sm:w-9'
                   >
                     <Pencil className='w-4 h-4' />
                   </Button>
@@ -153,7 +153,7 @@ function CreditCardsPage() {
                     variant='ghost'
                     size='icon'
                     onClick={() => setDeleteCard(card)}
-                    className='text-slate-500 hover:text-red-600 h-11 w-11 sm:h-9 sm:w-9'
+                    className='text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 h-11 w-11 sm:h-9 sm:w-9'
                   >
                     <Trash2 className='w-4 h-4' />
                   </Button>
@@ -165,15 +165,15 @@ function CreditCardsPage() {
 
         {/* Empty State */}
         {creditCards?.length === 0 && (
-          <Card className='border-dashed bg-slate-50/50'>
+          <Card className='border-dashed bg-slate-50/50 dark:bg-slate-800/50'>
             <CardContent className='p-8 text-center'>
-              <div className='w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4'>
-                <CreditCardIcon className='w-7 h-7 text-slate-400' />
+              <div className='w-14 h-14 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4'>
+                <CreditCardIcon className='w-7 h-7 text-slate-400 dark:text-slate-500' />
               </div>
-              <h3 className='font-semibold text-slate-700 mb-1'>
+              <h3 className='font-semibold text-slate-700 dark:text-slate-300 mb-1'>
                 {t('creditCards.noCreditCardsYet')}
               </h3>
-              <p className='text-sm text-slate-500 mb-4'>
+              <p className='text-sm text-slate-500 dark:text-slate-400 mb-4'>
                 {t('creditCards.addFirstCard')}
               </p>
               <Button onClick={() => setDialogOpen(true)} className='gap-2'>

@@ -19,6 +19,8 @@ import { toast } from 'sonner';
 import { User } from '@/types';
 import { Wallet, Mail, Lock } from 'lucide-react';
 import { Footer } from '@/components/layout/Footer';
+import { ThemeSwitcher } from '@/components/layout/ThemeSwitcher';
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 
 const createLoginSchema = (t: (key: string) => string) =>
@@ -65,21 +67,27 @@ function LoginPage() {
   };
 
   return (
-    <div className='min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100'>
+    <div className='min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800'>
       {/* Header */}
       <div className='p-4 md:p-6'>
-        <div className='flex items-center gap-2 text-slate-800'>
-          <Wallet className='w-6 h-6 text-emerald-600' />
-          <span className='font-bold text-lg'>{t('app.name')}</span>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center gap-2 text-slate-800 dark:text-slate-100'>
+            <Wallet className='w-6 h-6 text-emerald-600 dark:text-emerald-500' />
+            <span className='font-bold text-lg'>{t('app.name')}</span>
+          </div>
+          <div className='flex items-center gap-4'>
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className='flex-1 flex items-center justify-center p-4'>
-        <Card className='w-full max-w-md shadow-lg border-slate-200/50'>
+        <Card className='w-full max-w-md shadow-lg'>
           <CardHeader className='space-y-1 pb-4'>
             <CardTitle className='text-2xl font-bold text-center'>
-              {t('auth.welcomeBack')}
+              {t('auth.welcome')}
             </CardTitle>
             <CardDescription className='text-center'>
               {t('auth.enterCredentials')}
@@ -90,7 +98,7 @@ function LoginPage() {
               <div className='space-y-2'>
                 <Label htmlFor='email'>{t('auth.email')}</Label>
                 <div className='relative'>
-                  <Mail className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
+                  <Mail className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500' />
                   <Input
                     id='email'
                     type='email'
@@ -109,13 +117,13 @@ function LoginPage() {
                   <Label htmlFor='password'>{t('auth.password')}</Label>
                   <Link
                     to='/forgot-password'
-                    className='text-sm text-emerald-600 hover:text-emerald-700 hover:underline'
+                    className='text-sm text-emerald-600 dark:text-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 hover:underline'
                   >
                     {t('auth.forgotPassword')}
                   </Link>
                 </div>
                 <div className='relative'>
-                  <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
+                  <Lock className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500' />
                   <Input
                     id='password'
                     type='password'
@@ -139,11 +147,11 @@ function LoginPage() {
                 {isPending ? t('auth.loggingIn') : t('auth.login')}
               </Button>
 
-              <p className='text-center text-sm text-slate-600 pt-2'>
+              <p className='text-center text-sm text-slate-600 dark:text-slate-400 pt-2'>
                 {t('auth.dontHaveAccount')}{' '}
                 <Link
                   to='/register'
-                  className='font-medium text-emerald-600 hover:text-emerald-700 hover:underline'
+                  className='font-medium text-emerald-600 dark:text-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 hover:underline'
                 >
                   {t('auth.register')}
                 </Link>
