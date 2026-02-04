@@ -79,7 +79,7 @@ function LoginPage() {
         <Card className='w-full max-w-md shadow-lg border-slate-200/50'>
           <CardHeader className='space-y-1 pb-4'>
             <CardTitle className='text-2xl font-bold text-center'>
-              {t('auth.welcomeBack')}
+              {t('auth.welcome')}
             </CardTitle>
             <CardDescription className='text-center'>
               {t('auth.enterCredentials')}

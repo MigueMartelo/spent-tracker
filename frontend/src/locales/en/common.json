@@ -26,7 +26,7 @@
     "logout": "Logout",
     "register": "Create account",
     "registering": "Creating account...",
-    "welcomeBack": "Welcome back",
+    "welcome": "Welcome",
     "createAccount": "Create an account",
     "enterCredentials": "Enter your credentials to access your account",
     "startTracking": "Start tracking your expenses today",
